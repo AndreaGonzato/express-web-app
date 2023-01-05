@@ -6,23 +6,47 @@ const router = express.Router();
 
 const db = require("./db.js");
 
-router.get(`/${db.USERS_COLLECTION_NAME}`, async (req, res) => {
-    const mongo = db.getDb();
-    let users = await mongo.collection(db.USERS_COLLECTION_NAME).find().toArray();
-    res.json(users);
-});
-
-router.post(`/${db.USERS_COLLECTION_NAME}`, async (req, res) => {
+// register a new user
+router.post("/auth/signup", async (req, res) => {
     const mongo = db.getDb();
     const user = req.body;
     const last = await mongo.collection(db.USERS_COLLECTION_NAME).findOne({}, {sort: {"id": -1}});
     let lastID = last?.id === undefined ? 0 : last.id;
     lastID++;
     user.id = lastID;
-    console.log(user);
-    await mongo.collection("users").insertOne(user);
+    console.log(user); // TODO remove this log
+    await mongo.collection(db.USERS_COLLECTION_NAME).insertOne(user);
     res.json(user);
 });
+
+
+// TODO POST /api/auth/signin Login of a user 
+
+
+// show info of user with this id
+router.get("/social/users/:id", async (req, res) => {
+    const mongo = db.getDb();
+    const id = parseInt(req.params.id);
+    let user = await mongo.collection(db.USERS_COLLECTION_NAME).findOne({'id' : id});
+    res.json(user);
+});
+
+
+
+
+
+/*
+
+
+router.get("/social/users", async (req, res) => {
+    const mongo = db.getDb();
+    let users = await mongo.collection(db.USERS_COLLECTION_NAME).findO().toArray();
+    res.json(users);
+});
+
+*/
+
+
 
 
 /*
