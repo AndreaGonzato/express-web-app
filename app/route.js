@@ -6,16 +6,16 @@ const router = express.Router();
 
 const db = require("./db.js");
 
-router.get("/users", async (req, res) => {
+router.get(`/${db.USERS_COLLECTION_NAME}`, async (req, res) => {
     const mongo = db.getDb();
-    let users = await mongo.collection("users").find().toArray();
+    let users = await mongo.collection(db.USERS_COLLECTION_NAME).find().toArray();
     res.json(users);
 });
 
-router.post("/users", async (req, res) => {
+router.post(`/${db.USERS_COLLECTION_NAME}`, async (req, res) => {
     const mongo = db.getDb();
     const user = req.body;
-    const last = await mongo.collection("users").findOne({}, {sort: {"id": -1}});
+    const last = await mongo.collection(db.USERS_COLLECTION_NAME).findOne({}, {sort: {"id": -1}});
     let lastID = last?.id === undefined ? 0 : last.id;
     lastID++;
     user.id = lastID;
