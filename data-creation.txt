@@ -1,0 +1,60 @@
+mongo
+
+use expressDB
+db.dropDatabase()
+
+
+use expressDB
+
+
+db.users.insertMany([
+{
+    "id" : 1,
+    "username": "gonz",
+    "email" : "gonzatoandrea98@gmail.com",
+    "password" : "mySecretPasswor",
+    "name": "Andrea",
+    "surname": "Gonzato",
+    "bio": "this a bio"
+},
+{   
+    "id" : 2,
+    "username": "mat",
+    "email" : "mattiadeg@gmail.com",
+    "password" : "pass",
+    "name": "Mattia",
+    "surname": "Deganutti",
+    "bio": "this a very short bio"
+},
+{
+    "id" : 3,
+    "username": "ebe",
+    "email" : "ebe@gmail.com",
+    "password" : "somPass",
+    "name": "Ebe",
+    "surname": "Del Vecchio",
+    "bio": "this a very deep bio"
+}
+]);
+
+
+db.users.insertMany([
+{
+    "id" : 4,
+    "username": "rick",
+    "email" : "rick@redbull.com",
+    "password" : "bullPass",
+    "name": "Riccardo",
+    "surname": "Maltese",
+    "bio": "this a bio for my account"
+},
+{   
+    "id" : 5,
+    "username": "tiziolo",
+    "email" : "tiziolo@units.it",
+    "password" : "pass",
+    "name": "Tizio",
+    "surname": "Caio",
+    "bio": "this a very short bio"
+}
+]);
