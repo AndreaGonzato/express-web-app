@@ -1,11 +1,11 @@
 const express = require("express");
-const { getDb } = require("./db.js");
+const { getDb } = require("./database/db.js");
 const dbCollections = require('./database/collections.js');
 
 
 const router = express.Router();
 
-const db = require("./db.js");
+const db = require("./database/db.js");
 
 // register a new user
 router.post("/auth/signup", async (req, res) => {

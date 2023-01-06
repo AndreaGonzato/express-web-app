@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-const db = require("./db.js");
+const db = require("./database/db.js");
 
 const API_router = require("./route.js");
 
