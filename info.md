@@ -50,7 +50,11 @@ use of plural name for Mongo collection
 
 Plural of express is expresses
 
-### Data
-An user do not know who follow him. But every users can decide who to follow and have  complete list.
+### Data structure
+In an user document a record do not know who follow him. But every record store and know who is following.
 
 The in a document user there is no the liked_tweets filed.
+
+
+## slide
+JWT 521
