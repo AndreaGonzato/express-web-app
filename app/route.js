@@ -77,30 +77,25 @@ router.post("/social/messages", async (req, res) => {
 
     const nextTweetID = await dbManager.getNextId(dbCollections.TWEETS);
 
-    const document = {
+    const tweet = {
         id: nextTweetID,
         author: user_id,
         text: message_text,
         created_at: new Date()
     };
     
-    const collection = mongo.collection(db.TWEETS_COLLECTION_NAME);
+    const collection = mongo.collection(dbCollections.TWEETS);
 
-    await collection.insertOne(document);
+    await collection.insertOne(tweet);
 
-    res.json(message_text);
+    res.json(tweet);
 
 
 });
 
 
 
-
-
-
 /*
-
-
 router.get("/social/users", async (req, res) => {
     const mongo = db.getDb();
     let users = await mongo.collection(db.USERS_COLLECTION_NAME).find().toArray();
