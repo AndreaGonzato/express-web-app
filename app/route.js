@@ -1,5 +1,6 @@
 const express = require("express");
 const { getDb } = require("./db.js");
+const dbCollections = require('./database/collections.js');
 
 
 const router = express.Router();
@@ -10,12 +11,12 @@ const db = require("./db.js");
 router.post("/auth/signup", async (req, res) => {
     const mongo = db.getDb();
     const user = req.body;
-    const last = await mongo.collection(db.USERS_COLLECTION_NAME).findOne({}, {sort: {"id": -1}});
+    const last = await mongo.collection(dbCollections.USERS).findOne({}, {sort: {"id": -1}});
     let lastID = last?.id === undefined ? 0 : last.id;
     lastID++;
     user.id = lastID;
     console.log(user); // TODO remove this log
-    await mongo.collection(db.USERS_COLLECTION_NAME).insertOne(user);
+    await mongo.collection(dbCollections.USERS).insertOne(user);
     res.json(user);
 });
 
@@ -27,7 +28,7 @@ router.post("/auth/signup", async (req, res) => {
 router.get("/social/users/:id", async (req, res) => {
     const mongo = db.getDb();
     const id = parseInt(req.params.id);
-    let user = await mongo.collection(db.USERS_COLLECTION_NAME).findOne({'id' : id});
+    let user = await mongo.collection(dbCollections.USERS).findOne({'id' : id});
     res.json(user);
 });
 
@@ -37,7 +38,7 @@ router.get("/social/users/:id", async (req, res) => {
 router.get("/social/messages/:userId", async (req, res) => {
     const mongo = db.getDb();
     const user_id = parseInt(req.params.userId);
-    let tweets = await mongo.collection(db.TWEETS_COLLECTION_NAME).find({author : user_id}).toArray();
+    let tweets = await mongo.collection(dbCollections.TWEETS).find({author : user_id}).toArray();
     res.json(tweets);
 });
 
@@ -49,7 +50,7 @@ router.get("/social/messages/:userId/:idMsg", async (req, res) => {
     const user_id = parseInt(req.params.userId);
     const message_id = parseInt(req.params.idMsg);
 
-    let tweet = await mongo.collection(db.TWEETS_COLLECTION_NAME).findOne({id : message_id, author: user_id});
+    let tweet = await mongo.collection(dbCollections.TWEETS).findOne({id : message_id, author: user_id});
     res.json(tweet);
 });
 
@@ -73,7 +74,7 @@ router.post("/social/messages", async (req, res) => {
     */
 
 
-    const last_obj = await mongo.collection(db.TWEETS_COLLECTION_NAME).findOne({}, {sort: {"id": -1}});
+    const last_obj = await mongo.collection(dbCollections.TWEETS).findOne({}, {sort: {"id": -1}});
     let lastID = last_obj?.id === undefined ? 0 : last_obj.id;
     lastID++;
 
