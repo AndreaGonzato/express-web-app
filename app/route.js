@@ -93,6 +93,74 @@ router.post("/social/messages", async (req, res) => {
 
 });
 
+// API 7 : OK
+// list all the followers of a user with a given id
+router.get("/social/followers/:id", async (req, res) => {
+    const mongo = db.getDb();
+    const userID = parseInt(req.params.id);
+
+    const query = {following : {$in : [userID] }};
+    const users = await mongo.collection(dbCollections.USERS).find(query).toArray();
+
+    res.json(users);
+});
+
+
+// API 8 : REDO AFTER AUTHENTICATION
+// add a new follow to the user with the given id 
+// Aggiunta di un nuovo follow per l’utente id
+// PROBLEM: whom I'am? I need to add a following to the current authenticated user 
+router.post("/social/followers/:id", async (req, res) => {
+    const mongo = getDb();
+    const userIDThatHasNewFollower = parseInt(req.params.id);
+
+    const response = {
+        val: "this API is not implemented yet"
+    }
+
+    res.json(tweet);
+
+});
+
+
+// API 9 : DO AFTER AUTHENTICATION
+// DELETE /api/social/followers/:id Rimozione del follow all’utente id
+
+// API 10 : DO AFTER AUTHENTICATION
+// GET /api/social/feed Elenco dei messaggi degli utenti seguiti
+
+// API 11 : DO AFTER AUTHENTICATION
+// POST /api/social/like/:idMessage Like ad un messaggio con ID idMessage
+
+// API 12 : DO AFTER AUTHENTICATION
+// DELETE /api/social/like/:idMessage Rimozione like al messaggio con ID idMessage
+
+
+// API 13 : OK
+// GET /api/social/search?q=query
+// Remember that JSON format use double quotes for the attribute definition. e.g. {"id" : 1}
+// find the user that match the query string
+router.get("/social/search", async (req, res) => {
+    const mongo = db.getDb();
+    const queryString = req.query.q;
+    const queryObj = JSON.parse(queryString);
+
+    const users = await mongo.collection(dbCollections.USERS).find(queryObj).toArray();
+
+    res.json(users);
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
