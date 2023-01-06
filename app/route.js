@@ -42,6 +42,18 @@ router.get("/social/messages/:userId", async (req, res) => {
 });
 
 
+// API 5 : 
+// a singular tweet (idMsg) of the user (userID)
+router.get("/social/messages/:userId/:idMsg", async (req, res) => {
+    const mongo = db.getDb();
+    const user_id = parseInt(req.params.userId);
+    const message_id = parseInt(req.params.idMsg);
+
+    let tweet = await mongo.collection(db.TWEETS_COLLECTION_NAME).findOne({id : message_id, author: user_id});
+    res.json(tweet);
+});
+
+
 
 
 
