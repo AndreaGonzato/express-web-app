@@ -22,13 +22,23 @@ router.post("/auth/signup", async (req, res) => {
 
 // TODO POST /api/auth/signin Login of a user 
 
-
+// API 3 : OK
 // show info of user with this id
 router.get("/social/users/:id", async (req, res) => {
     const mongo = db.getDb();
     const id = parseInt(req.params.id);
     let user = await mongo.collection(db.USERS_COLLECTION_NAME).findOne({'id' : id});
     res.json(user);
+});
+
+
+// API 4 : OK
+// list all the tweets of the user with this id
+router.get("/social/messages/:userId", async (req, res) => {
+    const mongo = db.getDb();
+    const user_id = parseInt(req.params.userId);
+    let tweets = await mongo.collection(db.TWEETS_COLLECTION_NAME).find({author : user_id}).toArray();
+    res.json(tweets);
 });
 
 
@@ -40,7 +50,7 @@ router.get("/social/users/:id", async (req, res) => {
 
 router.get("/social/users", async (req, res) => {
     const mongo = db.getDb();
-    let users = await mongo.collection(db.USERS_COLLECTION_NAME).findO().toArray();
+    let users = await mongo.collection(db.USERS_COLLECTION_NAME).find().toArray();
     res.json(users);
 });
 

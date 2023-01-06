@@ -45,3 +45,12 @@ db.<collection-name>.find()
 
 Naming
 use of plural name for Mongo collection
+
+## Observations
+
+Plural of express is expresses
+
+### Data
+An user do not know who follow him. But every users can decide who to follow and have  complete list.
+
+The in a document user there is no the liked_tweets filed.
