@@ -42,7 +42,7 @@ router.get("/social/messages/:userId", async (req, res) => {
 });
 
 
-// API 5 : 
+// API 5 : OK
 // a singular tweet (idMsg) of the user (userID)
 router.get("/social/messages/:userId/:idMsg", async (req, res) => {
     const mongo = db.getDb();
@@ -52,6 +52,56 @@ router.get("/social/messages/:userId/:idMsg", async (req, res) => {
     let tweet = await mongo.collection(db.TWEETS_COLLECTION_NAME).findOne({id : message_id, author: user_id});
     res.json(tweet);
 });
+
+
+// API 6 : REDO AFTER AUTHENTICATION
+// PROBLEM : who is the user that post the message? For the moment in a demo version the user is me (id == 1)
+// create a new tweet
+router.post("/social/messages", async (req, res) => {
+    const mongo = getDb();
+    const message_text = req.body.text;
+
+    // TODO determine the user ID of the authenticated user
+    const user_id = 1;
+
+    /* something like this from lecture
+    const user = await mongo.collection("users").findOne({username});
+    if( user?.username === username && user?.password == password){
+        // correct credential -> so user is authenticated, now i need to authorize him
+        // use here JWT 
+    }
+    */
+
+
+    const last_obj = await mongo.collection(db.TWEETS_COLLECTION_NAME).findOne({}, {sort: {"id": -1}});
+    let lastID = last_obj?.id === undefined ? 0 : last_obj.id;
+    lastID++;
+
+    const document = {
+        id: lastID,
+        author: user_id,
+        text: message_text,
+        created_at: new Date()
+    };
+    
+    const collection = mongo.collection(db.TWEETS_COLLECTION_NAME);
+
+    await collection.insertOne(document);
+
+    res.json(message_text);
+
+
+});
+
+
+
+
+function lastId(collectionName){
+    let last = -99;
+    return last;
+}
+
+
 
 
 
