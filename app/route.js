@@ -1,5 +1,7 @@
 const express = require("express");
+
 const { getDb } = require("./database/db.js");
+const dbManager = require("./database/db-manager.js");
 const dbCollections = require('./database/collections.js');
 
 
@@ -11,10 +13,10 @@ const db = require("./database/db.js");
 router.post("/auth/signup", async (req, res) => {
     const mongo = db.getDb();
     const user = req.body;
-    const last = await mongo.collection(dbCollections.USERS).findOne({}, {sort: {"id": -1}});
-    let lastID = last?.id === undefined ? 0 : last.id;
-    lastID++;
-    user.id = lastID;
+
+    const nextUserID = await dbManager.getNextId(dbCollections.USERS);
+
+    user.id = nextUserID;
     console.log(user); // TODO remove this log
     await mongo.collection(dbCollections.USERS).insertOne(user);
     res.json(user);
@@ -73,13 +75,10 @@ router.post("/social/messages", async (req, res) => {
     }
     */
 
-
-    const last_obj = await mongo.collection(dbCollections.TWEETS).findOne({}, {sort: {"id": -1}});
-    let lastID = last_obj?.id === undefined ? 0 : last_obj.id;
-    lastID++;
+    const nextTweetID = await dbManager.getNextId(dbCollections.TWEETS);
 
     const document = {
-        id: lastID,
+        id: nextTweetID,
         author: user_id,
         text: message_text,
         created_at: new Date()
@@ -93,15 +92,6 @@ router.post("/social/messages", async (req, res) => {
 
 
 });
-
-
-
-
-function lastId(collectionName){
-    let last = -99;
-    return last;
-}
-
 
 
 

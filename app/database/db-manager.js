@@ -1,6 +1,6 @@
 const db = require("./db.js");
 
-/*
+
 async function getNextId(collectionName){
     const mongo = db.getDb();
     const last_obj = await mongo.collection(collectionName).findOne({}, {sort: {"id": -1}});
@@ -11,5 +11,3 @@ async function getNextId(collectionName){
 }
 
 module.exports.getNextId = getNextId;
-
-*/
