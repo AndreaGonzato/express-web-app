@@ -19,30 +19,6 @@ function generateToken(tokenContent) {
 }
 
 
-const router = express.Router();
-
-
-
-router.post('/login', async (req, res) => {
-    const mongo = db.getDb();
-    const postedUser ={ email, password } = req.body;
-
-    console.log("login router test"); // TODO remove
-
-    // TODO check tat it dos not inject code with user and password
-
-    const user = await mongo.collection(dbCollections.USERS).findOne(postedUser);
-
-    if(!user){
-        // User not found: (email + password) does not match
-        res.status(400).send({ message: 'User not found' });
-    }else{
-        const token = generateToken({id : user.id});
-        res.send(token);
-    }
-
-});
-
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
@@ -66,6 +42,9 @@ function authenticateToken(req, res, next) {
 
 
 
+const router = express.Router();
+
+
 
 router.get('/protected', authenticateToken, async (req, res) => {
     const userId = req.user.id;
@@ -74,7 +53,7 @@ router.get('/protected', authenticateToken, async (req, res) => {
 });
 
 
-
+// API 1 : 
 // register a new user
 router.post("/auth/signup", async (req, res) => {
     const mongo = db.getDb();
@@ -83,13 +62,34 @@ router.post("/auth/signup", async (req, res) => {
     const nextUserID = await dbManager.getNextId(dbCollections.USERS);
 
     user.id = nextUserID;
-    console.log(user); // TODO remove this log
     await mongo.collection(dbCollections.USERS).insertOne(user);
     res.json(user);
 });
 
 
-// TODO POST /api/auth/signin Login of a user 
+
+// API 2 : OK
+// login of a user 
+// when a user sign in I give him a JWT token
+router.post("/auth/signin", async (req, res) => {
+    const mongo = db.getDb();    
+
+    const postedUser = { email, password } = req.body;
+
+    // TODO check that it dos not inject code with user and password
+
+    const user = await mongo.collection(dbCollections.USERS).findOne(postedUser);
+
+    if(!user){
+        // User not found: (email + password) does not match
+        res.status(400).send({ message: 'User not found' });
+    }else{
+        const token = generateToken({id : user.id});
+        res.send(token);
+    }
+});
+
+
 
 // API 3 : OK
 // show info of user with this id
