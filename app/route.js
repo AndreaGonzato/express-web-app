@@ -15,7 +15,7 @@ const JWT_SECRET = process.env.TOKEN_SECRET;
 
 
 function generateToken(tokenContent) {    
-    return jwt.sign(tokenContent, JWT_SECRET, { expiresIn: '1800s' });
+    return jwt.sign(tokenContent, JWT_SECRET, { expiresIn: '1d' });
 }
 
 
@@ -26,6 +26,8 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
     const mongo = db.getDb();
     const postedUser ={ email, password } = req.body;
+
+    console.log("login router test"); // TODO remove
 
     // TODO check tat it dos not inject code with user and password
 
@@ -58,7 +60,7 @@ function authenticateToken(req, res, next) {
         
         // save the user data in the req obj
         req.user = authData;
-        next();
+        next(); 
     })
 }
 

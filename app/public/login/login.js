@@ -1,14 +1,21 @@
-document.getElementById("button").addEventListener("click", e => {
+document.getElementById("button").addEventListener("click", async (e) => {
     e.preventDefault();
-    const username = document.getElementById("login").value;
-    const password = document.getElementById("password").value;
-    const data = {username, password};
+    const email = document.getElementById("emailID").value;
+    
+    const password = document.getElementById("passID").value;
 
-    fetch("api/login", {
+    const data = {email, password};
+
+    const token = await fetch("/api/login", {
         method: "POST",
         headers: {"Content-type": "application/json"},
         body: JSON.stringify(data)
-    })
-    .then( d => d.json)
-    .then(j => console.log(j));
+    });
+
+    // TODO resolve here
+    // set token in cookie
+    document.cookie = `token=${token}`
+
+    console.log("token", token);
+
 });
