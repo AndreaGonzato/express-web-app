@@ -1,13 +1,77 @@
 const express = require("express");
 
-const { getDb } = require("./database/db.js");
+const db = require("./database/db.js");
 const dbManager = require("./database/db-manager.js");
 const dbCollections = require('./database/collections.js');
+
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv'); // to access .env file
+
+
 
 
 const router = express.Router();
 
-const db = require("./database/db.js");
+const JWT_SECRET = "secretPass" // TOD this is not secure, change an put the password in a file that is not committed to a version control
+
+
+
+function generateAccessToken(username) { 
+    // get config vars
+    //dotenv.config();
+    
+    return jwt.sign(username, JWT_SECRET, { expiresIn: '1800s' });
+  }
+
+  
+function generateJWT(userId) {
+    return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '1d' });
+}
+
+router.post('/login', async (req, res) => {
+    const mongo = db.getDb();
+    const postedUser ={ email, password } = req.body;
+
+    // TODO check tat it dos not inject code with user and password
+
+    const user = await mongo.collection(dbCollections.USERS).findOne(postedUser);
+
+    if(!user){
+        // User not found: (email + password) does not match
+        res.status(400).send({ message: 'User not found' });
+    }else{
+        const token = generateAccessToken({id : user.id});
+        //const token = generateJWT(user.id);
+        res.send(token);
+    }
+
+});
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+  
+    if (token == null) return res.sendStatus(401)
+  
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+      console.log(err)
+  
+      if (err) return res.sendStatus(403)
+  
+      req.user = user
+  
+      next()
+    })
+}
+
+
+
+
+router.get('/protected', authenticateToken, async (req, res) => {
+    res.json({message: "you are in a protected part of the site"})
+});
+
+
 
 // register a new user
 router.post("/auth/signup", async (req, res) => {
@@ -111,7 +175,7 @@ router.get("/social/followers/:id", async (req, res) => {
 // Aggiunta di un nuovo follow per l’utente id
 // PROBLEM: whom I'am? I need to add a following to the current authenticated user 
 router.post("/social/followers/:id", async (req, res) => {
-    const mongo = getDb();
+    const mongo = db.getDb();
     const userIDThatHasNewFollower = parseInt(req.params.id);
 
     const response = {

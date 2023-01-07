@@ -56,5 +56,7 @@ In an user document a record do not know who follow him. But every record store 
 The in a document user there is no the liked_tweets filed.
 
 
-## slide
-JWT 521
+## JWT
+slide at page 521
+
+in the token i put only the user.id
