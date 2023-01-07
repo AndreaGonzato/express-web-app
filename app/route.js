@@ -4,29 +4,24 @@ const db = require("./database/db.js");
 const dbManager = require("./database/db-manager.js");
 const dbCollections = require('./database/collections.js');
 
+
+// JWT
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv'); // to access .env file
+const dotenv = require('dotenv'); // to access .env file to load a secret password
+// get config vars
+dotenv.config();
+// access config var
+const JWT_SECRET = process.env.TOKEN_SECRET; 
 
 
+function generateToken(tokenContent) {    
+    return jwt.sign(tokenContent, JWT_SECRET, { expiresIn: '1800s' });
+}
 
 
 const router = express.Router();
 
-const JWT_SECRET = "secretPass" // TOD this is not secure, change an put the password in a file that is not committed to a version control
 
-
-
-function generateAccessToken(username) { 
-    // get config vars
-    //dotenv.config();
-    
-    return jwt.sign(username, JWT_SECRET, { expiresIn: '1800s' });
-  }
-
-  
-function generateJWT(userId) {
-    return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '1d' });
-}
 
 router.post('/login', async (req, res) => {
     const mongo = db.getDb();
@@ -40,8 +35,7 @@ router.post('/login', async (req, res) => {
         // User not found: (email + password) does not match
         res.status(400).send({ message: 'User not found' });
     }else{
-        const token = generateAccessToken({id : user.id});
-        //const token = generateJWT(user.id);
+        const token = generateToken({id : user.id});
         res.send(token);
     }
 
@@ -51,16 +45,20 @@ function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
   
-    if (token == null) return res.sendStatus(401)
+    if (token == null){
+        res.status(401).send("Unauthorized");
+    }
   
-    jwt.verify(token, JWT_SECRET, (err, user) => {
-      console.log(err)
+    jwt.verify(token, JWT_SECRET, (err, authData) => {
   
-      if (err) return res.sendStatus(403)
-  
-      req.user = user
-  
-      next()
+        if (err){
+            console.error(err);
+            res.sendStatus(403);
+        }
+        
+        // save the user data in the req obj
+        req.user = authData;
+        next();
     })
 }
 
@@ -68,7 +66,9 @@ function authenticateToken(req, res, next) {
 
 
 router.get('/protected', authenticateToken, async (req, res) => {
-    res.json({message: "you are in a protected part of the site"})
+    const userId = req.user.id;
+
+    res.json({message: "you are in a protected part of the site", userId : userId})
 });
 
 
