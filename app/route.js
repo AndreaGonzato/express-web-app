@@ -210,8 +210,12 @@ router.get("/social/feed", authenticateToken, async (req, res) => {
         });
         
     }
-    
-    // TODO the output is not chronological ordered 
+
+    output.messages.sort(function(a, b) {
+        let dateA = new Date(a.created_at);
+        let dateB = new Date(b.created_at);
+        return dateB - dateA;
+    });
 
     res.json(output);
 });
