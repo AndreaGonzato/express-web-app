@@ -59,139 +59,139 @@ db.users.insertMany([
 db.tweets.insertMany([{
     id  : 1,
     author : 1,    
-    body : "I love web development!",    
+    text : "I love web development!",    
     likes : [12, 10, 8 , 5],
     created_at: ISODate("2023-01-06T09:00:00Z")
 },
 {
     id  : 2,
     author : 2,
-    body : "JavaScript is my favorite programming language.",
+    text : "JavaScript is my favorite programming language.",
     likes : [9, 6, 7 , 4],
     created_at: ISODate("2023-01-01T10:00:00Z")
 },
 {
     id  : 3,
     author : 3,
-    body : "I'm learning about databases in my computer science class.",
+    text : "I'm learning about databases in my computer science class.",
     likes : [11, 8, 6 , 7],
     created_at: ISODate("2023-01-01T11:00:00Z")
 },
 {
     id  : 4,
     author : 4,
-    body : "I'm building a web app using Node.js and Express.",
+    text : "I'm building a web app using Node.js and Express.",
     likes : [12, 9, 7 , 5],
     created_at: ISODate("2023-01-01T12:00:00Z")
 },
 {
     id  : 5,
     author : 5,
-    body : "I just deployed my first serverless function on AWS Lambda.",
+    text : "I just deployed my first serverless function on AWS Lambda.",
     likes : [10, 8, 2 , 3],
     created_at: ISODate("2023-01-04T13:00:00Z")
 },
 {
     id  : 6,
     author : 6,
-    body : "I'm learning about React and building a front-end for my web app.",
+    text : "I'm learning about React and building a front-end for my web app.",
     likes : [9, 7, 10 , 4],
     created_at: ISODate("2023-01-01T14:00:00Z")
 },
 {
     id  : 7,
     author : 7,
-    body : "I'm excited to start learning about machine learning and artificial intelligence.",
+    text : "I'm excited to start learning about machine learning and artificial intelligence.",
     likes : [8, 6, 4 , 2],
     created_at: ISODate("2023-01-05T15:00:00Z")
 },
 {
     id  : 8,
     author : 8,
-    body : "I'm working on a project to visualize data using D3.js.",
+    text : "I'm working on a project to visualize data using D3.js.",
     likes : [7, 5, 3 , 1],
     created_at: ISODate("2023-01-04T16:00:00Z")
 },
 {
     id  : 9,
     author : 9,
-    body : "I'm learning about the MERN stack (MongoDB, Express, React, Node.js).",
+    text : "I'm learning about the MERN stack (MongoDB, Express, React, Node.js).",
     likes : [6, 4, 2],
     created_at: ISODate("2023-01-03T17:00:00Z")
 },
 {
     id  : 10,
     author : 10,
-    body : "I'm working on a project to classify emails as spam or not spam using machine learning.",
+    text : "I'm working on a project to classify emails as spam or not spam using machine learning.",
     likes : [5, 3, 1 ],
     created_at: ISODate("2023-01-03T17:05:00Z")
 },
 {
     id  : 11,
     author : 12,    
-    body : "I'm learning about data modeling and NoSQL databases.",    
+    text : "I'm learning about data modeling and NoSQL databases.",    
     likes : [9, 7, 5 , 3],
     created_at: ISODate("2023-01-06T02:00:00Z")
 },
 {
     id  : 12,
     author : 1,
-    body : "I'm using GraphQL to build a more flexible API for my web app.",
+    text : "I'm using GraphQL to build a more flexible API for my web app.",
     likes : [8, 6, 4 , 2],
     created_at: ISODate("2023-01-06T09:00:00Z")
 },
 {   id  : 13,
     author : 1,    
-    body : "I'm learning about microservices and how to build scalable web applications.",    
+    text : "I'm learning about microservices and how to build scalable web applications.",    
     likes : [7, 5, 3 , 11],
     created_at: ISODate("2023-01-06T21:00:00Z")
 },
 {
     id  : 14,
     author : 2,
-    body : "I'm building a REST API using Node.js and Express.",
+    text : "I'm building a REST API using Node.js and Express.",
     likes : [6, 4, 5 ],
     created_at: ISODate("2023-01-06T22:00:00Z")
 },
 {
     id  : 15,
     author : 3,
-    body : "I'm learning about data security and authentication in web development.",
+    text : "I'm learning about data security and authentication in web development.",
     likes : [5, 9, 1 ],
     created_at: ISODate("2023-01-06T23:00:00Z")
 },
 {
     id  : 16,
     author : 4,
-    body : "I'm using AWS to host my web application.",
+    text : "I'm using AWS to host my web application.",
     likes : [12, 2],
     created_at: ISODate("2023-01-07T00:00:00Z")
 },
 {
     id  : 17,
     author : 5,
-    body : "I'm learning about design patterns in software engineering.",
+    text : "I'm learning about design patterns in software engineering.",
     likes : [3, 1, 9],
     created_at: ISODate("2023-01-04T04:00:00Z")
 },
 {
     id  : 18,
     author : 6,
-    body : "I'm learning about software testing and how to write efficient test cases.",
+    text : "I'm learning about software testing and how to write efficient test cases.",
     likes : [2, 4],
     created_at: ISODate("2023-01-07T02:00:00Z")
 },
 {
     id  : 19,
     author : 7,
-    body : "I'm learning about agile development methodologies.",
+    text : "I'm learning about agile development methodologies.",
     likes : [1, 2, 3, 4, 5, 8, 9, 10],
     created_at: ISODate("2023-01-07T03:00:00Z")
 },
 {
     id  : 20,
     author : 8,
-    body : "I'm learning about cloud computing and how it can benefit businesses.",
+    text : "I'm learning about cloud computing and how it can benefit businesses.",
     likes : [1, 7],
     created_at: ISODate("2023-01-07T04:00:00Z")
 }]);
@@ -280,13 +280,8 @@ db.users.updateOne(
 
 
 
-
-
-
-
-
-
-
+// Lista dei followers dell’utente con ID <1>
+db.users.find({following : { $in : [1] }})
 
 
 

@@ -45,11 +45,17 @@ function authenticateToken(req, res, next) {
 const router = express.Router();
 
 
-
+// TODO remove this, it is just an example
 router.get('/protected', authenticateToken, async (req, res) => {
     const userId = req.user.id;
 
     res.json({message: "you are in a protected part of the site", userId : userId})
+});
+
+// TODO remove this get
+router.get('/test', (req, res) => {
+    res.json({message: "server is working"});
+    console.log("I'm still alive");
 });
 
 
@@ -60,8 +66,10 @@ router.post("/auth/signup", async (req, res) => {
     const user = req.body;
 
     const nextUserID = await dbManager.getNextId(dbCollections.USERS);
-
     user.id = nextUserID;
+
+    // check that the username is unique
+
     await mongo.collection(dbCollections.USERS).insertOne(user);
     res.json(user);
 });
@@ -123,30 +131,21 @@ router.get("/social/messages/:userId/:idMsg", async (req, res) => {
 });
 
 
-// API 6 : REDO AFTER AUTHENTICATION
-// PROBLEM : who is the user that post the message? For the moment in a demo version the user is me (id == 1)
+// API 6 : OK
 // create a new tweet
-router.post("/social/messages", async (req, res) => {
-    const mongo = getDb();
-    const message_text = req.body.text;
+// input: {"text": "a new Tweet"}
+router.post("/social/messages", authenticateToken, async (req, res) => {
+    const mongo = db.getDb();
+    const messageText = req.body.text;
 
-    // TODO determine the user ID of the authenticated user
-    const user_id = 1;
-
-    /* something like this from lecture
-    const user = await mongo.collection("users").findOne({username});
-    if( user?.username === username && user?.password == password){
-        // correct credential -> so user is authenticated, now i need to authorize him
-        // use here JWT 
-    }
-    */
+    const userID = req.user.id;
 
     const nextTweetID = await dbManager.getNextId(dbCollections.TWEETS);
 
     const tweet = {
         id: nextTweetID,
-        author: user_id,
-        text: message_text,
+        author: userID,
+        text: messageText,
         created_at: new Date()
     };
     
@@ -156,7 +155,6 @@ router.post("/social/messages", async (req, res) => {
 
     res.json(tweet);
 
-
 });
 
 // API 7 : OK
@@ -165,6 +163,8 @@ router.get("/social/followers/:id", async (req, res) => {
     const mongo = db.getDb();
     const userID = parseInt(req.params.id);
 
+    // e.g. : the following query will find the follower of the user with id equal to 1
+    // db.users.find({following : { $in : [1] }})
     const query = {following : {$in : [userID] }};
     const users = await mongo.collection(dbCollections.USERS).find(query).toArray();
 
@@ -192,8 +192,30 @@ router.post("/social/followers/:id", async (req, res) => {
 // API 9 : DO AFTER AUTHENTICATION
 // DELETE /api/social/followers/:id Rimozione del follow all’utente id
 
-// API 10 : DO AFTER AUTHENTICATION
-// GET /api/social/feed Elenco dei messaggi degli utenti seguiti
+// API 10 : OK
+// list all the messages of the following users
+router.get("/social/feed", authenticateToken, async (req, res) => {
+    const mongo = db.getDb();
+    const userId = req.user.id;
+    const user = await mongo.collection(dbCollections.USERS).findOne({id : userId});
+
+    const following = user.following;
+    let output = {messages: []};
+
+    for (let i = 0; i < following.length; i++) {
+        const messagesOfFollowingUserI = await mongo.collection(dbCollections.TWEETS).find({author: following[i]}).toArray();
+        
+        messagesOfFollowingUserI.forEach(message => {
+            output.messages.push(message)
+        });
+        
+    }
+    
+    // TODO the output is not chronological ordered 
+
+    res.json(output);
+});
+
 
 // API 11 : DO AFTER AUTHENTICATION
 // POST /api/social/like/:idMessage Like ad un messaggio con ID idMessage
@@ -217,8 +239,17 @@ router.get("/social/search", async (req, res) => {
 });
 
 
+// API 14 : OK
+// if the user is authenticated return the user info
+router.get("/social/whoami", authenticateToken, async (req, res) => {
+    const mongo = db.getDb();
 
+    const userId = req.user.id;
 
+    const user = await mongo.collection(dbCollections.USERS).findOne({id : userId});
+
+    res.json(user);
+});
 
 
 
