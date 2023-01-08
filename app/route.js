@@ -52,8 +52,8 @@ router.get("/protected", authenticateToken, async (req, res) => {
 
 // TODO remove this get, it is just a test to see if the server is still alive
 router.get("/test", (req, res) => {
-  console.log("I'm still alive");
-  res.json({ message: "server is working" });
+  console.log("Server is still alive");
+  res.json({ message: "server is still alive working" });
 });
 
 // API 1 : OK
@@ -286,7 +286,6 @@ router.post("/social/like/:idMessage", authenticateToken, async (req, res) => {
 
   if (!message) {
     // we don't have a message -> there is no message with this id
-    // TODO the server crash if enter to this if, solve it
     return res.status(500).send({
       message: "It dos not exist a message with this id: " + messageID,
     });
