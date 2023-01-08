@@ -321,9 +321,9 @@ router.delete(
 );
 
 // API 13 : OK
-// GET /api/social/search?q=query
-// Remember that JSON format use double quotes for the attribute definition. e.g. {"id" : 1}
 // find the user that match the query string
+// Remember that JSON format use double quotes for the attribute definition. e.g. of an http req: /api/social/search?q={"id" : 1}
+// GET /api/social/search?q=query
 router.get("/social/search", async (req, res) => {
   const mongo = db.getDb();
   const queryString = req.query.q;
@@ -351,53 +351,6 @@ router.get("/social/whoami", authenticateToken, async (req, res) => {
   res.json(user);
 });
 
-/*
 
-router.get("/books/:id", async (req, res) => {
-    const mongo = db.getDb();
-    const id = parseInt(req.params.id);
-    let book = await mongo.collection("books").findOne({'id' : id});
-    res.json(book);
-
-});
-
-
-router.put("/books/:id", async (req, res) => {
-    const mongo = db.getDb();
-    const book = req.body;
-    const id = parseInt(req.params.id);
-    await mongo.collection("books").updateOne({"id" : id}, book);
-    res.send(book);
-});
-
-router.delete("/books/:id", async (req, res) => {
-    const mongo = db.getDb();
-    const id = parseInt(req.params.id);
-    // find the element (just to return something in this function)
-    const book = await mongo.collection("books").findOne({'id' : id});
-    // remove the element
-    await mongo.collection("books").deleteOne({"id": id});
-    res.send(book); 
-}); 
-
-
-router.delete("/books/", async (req, res) => {
-    const mongo = db.getDb();
-    await mongo.collection("books").deleteMany({});
-    res.send({});
-}); 
-
-router.post("/login", async (req, res) => {
-    const mongo = getDb();
-    const {username, password} = req.body;
-    const user = await mongo.collection("users").findOne({username});
-    if( user?.username === username && user?.password == password){
-        // correct credential -> so user is authenticated, now i need to authorize him
-  
-        // use here JWT 
-    }
-});
-
-*/
 
 module.exports = router;
