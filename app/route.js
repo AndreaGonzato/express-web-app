@@ -84,7 +84,7 @@ router.post("/auth/signup", async (req, res) => {
 // API 2 : OK
 // login of a user
 // when a user sign in I give him a JWT token
-// e.g of an input: {"email" : "eamil@gamil.com", "password" : "myPassword"}
+// e.g of an input: {"email" : "myEmail@gmail.com", "password" : "myPassword"}
 router.post("/auth/signin", async (req, res) => {
   const mongo = db.getDb();
 

@@ -6,7 +6,7 @@ document.getElementById("button").addEventListener("click", async (e) => {
 
     const data = {email, password};
 
-    const token = await fetch("/api/login", {
+    const token = await fetch("/auth/signup", {
         method: "POST",
         headers: {"Content-type": "application/json"},
         body: JSON.stringify(data)

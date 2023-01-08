@@ -13,7 +13,7 @@ db.users.insertMany([
     id : 1,
     username: "gonz",
     email : "gonzatoandrea98@gmail.com",
-    password : "mySecretPasswor",
+    password : "myPassword",
     name: "Andrea",
     surname: "Gonzato",
     bio: "this a bio"
@@ -40,7 +40,7 @@ db.users.insertMany([
     id : 12,
     username: "ebe",
     email : "ebe@gmail.com",
-    password : "somPass",
+    password : "somePass",
     name: "Ebe",
     surname: "Del Vecchio",   
 }
@@ -207,7 +207,6 @@ db.users.updateOne(
    { id: 12 },
    { $set: { following: [1, 2, 7] } }
 );
-
 
 
 
