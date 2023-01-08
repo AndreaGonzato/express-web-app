@@ -181,8 +181,21 @@ router.post("/social/followers/:id", async (req, res) => {
   res.json(tweet);
 });
 
-// API 9 : DO AFTER AUTHENTICATION
-// DELETE /api/social/followers/:id Rimozione del follow all’utente id
+// API 9 : ok
+// remove a following user with a given id
+// require authentication to determine the user who decide to not follow anymore another user
+router.delete("/social/followers/:id", authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+  const userIdToRemoveFollow = parseInt(req.params.id);
+  
+  const mongo = db.getDb();
+
+  const result = await mongo
+    .collection(dbCollections.USERS)
+    .updateOne({ id: userId }, { $pull: { following: userIdToRemoveFollow } });
+
+  res.send({ result });
+});
 
 // API 10 : OK
 // list all the messages of the following users
@@ -243,7 +256,9 @@ router.post("/social/like/:idMessage", authenticateToken, async (req, res) => {
   let list = message.likes;
   if (list.includes(userID)) {
     // the user with userID has already put a like to this message previously
-    return res.send({ message: "you already put a like to this message previously" });
+    return res.send({
+      message: "you already put a like to this message previously",
+    });
   } else {
     // add a like to the message
     const result = await mongo
