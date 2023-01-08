@@ -224,8 +224,21 @@ router.get("/social/feed", authenticateToken, async (req, res) => {
 // API 11 : DO AFTER AUTHENTICATION
 // POST /api/social/like/:idMessage Like ad un messaggio con ID idMessage
 
-// API 12 : DO AFTER AUTHENTICATION
-// DELETE /api/social/like/:idMessage Rimozione like al messaggio con ID idMessage
+// API 12 : OK
+// delete a like to the message with a given id
+// require authentication to determine the user who remove the like
+router.delete("/social/like/:idMessage", authenticateToken, async (req, res) => {
+    const userId = req.user.id;
+    const idMessage = parseInt(req.params.idMessage);
+
+    const mongo = db.getDb();
+
+    // e.g. the following query remove the like of the user with id 1 to the message with id 20 (if has this like)
+    // db.tweets.updateOne({id:20}, {$pull: {likes: 1}});
+    const result = await mongo.collection(dbCollections.TWEETS).updateOne({id:idMessage}, {$pull: {likes: userId}});
+
+    res.send({result});
+}); 
 
 
 // API 13 : OK
