@@ -43,7 +43,7 @@ const router = express.Router();
 // TODO remove this, it is just an example to verify that an user is authenticated
 router.get("/protected", authenticateToken, async (req, res) => {
   const userId = req.user.id;
-  
+
   res.json({
     message: "you are in a protected part of the site",
     userId: userId,
