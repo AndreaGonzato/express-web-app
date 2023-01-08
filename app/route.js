@@ -216,7 +216,7 @@ router.get("/social/feed", authenticateToken, async (req, res) => {
   res.json(output);
 });
 
-// API 11 : TEST it when i pass an id that it does not exist
+// API 11 : OK
 // like to an message with a given ID
 // require authentication to determine the user who is putting the like
 router.post("/social/like/:idMessage", authenticateToken, async (req, res) => {
@@ -235,7 +235,7 @@ router.post("/social/like/:idMessage", authenticateToken, async (req, res) => {
   if (!message) {
     // we don't have a message -> there is no message with this id
     // TODO the server crash if enter to this if, solve it
-    res.send({
+    return res.status(500).send({
       message: "It dos not exist a message with this id: " + messageID,
     });
   }
@@ -243,7 +243,7 @@ router.post("/social/like/:idMessage", authenticateToken, async (req, res) => {
   let list = message.likes;
   if (list.includes(userID)) {
     // the user with userID has already put a like to this message previously
-    res.send({ message: "you already put a like to this message previously" });
+    return res.send({ message: "you already put a like to this message previously" });
   } else {
     // add a like to the message
     const result = await mongo
