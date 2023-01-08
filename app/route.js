@@ -166,28 +166,58 @@ router.get("/social/followers/:id", async (req, res) => {
   res.json(users);
 });
 
-// API 8 : REDO AFTER AUTHENTICATION
+// API 8 : OK
 // add a new follow to the user with the given id
-// Aggiunta di un nuovo follow per l’utente id
-// PROBLEM: whom I'am? I need to add a following to the current authenticated user
-router.post("/social/followers/:id", async (req, res) => {
-  const mongo = db.getDb();
+// require authentication to determine the user who decide to add a now following user increase his feed tweets
+router.post("/social/followers/:id", authenticateToken, async (req, res) => {
+  const userId = req.user.id;
   const userIDThatHasNewFollower = parseInt(req.params.id);
 
-  const response = {
-    val: "this API is not implemented yet",
-  };
+  const mongo = db.getDb();
 
-  res.json(tweet);
+  const user = await mongo
+    .collection(dbCollections.USERS)
+    .findOne({ id: userId });
+  const list = user.following;
+  if (list.includes(userIDThatHasNewFollower)) {
+    // the user with userId was already following him (userIDThatHasNewFollower)
+    return res.send({
+      message: "you already following user: " + userIDThatHasNewFollower,
+    });
+  } else {
+    const userThatHasNewFollower = await mongo
+      .collection(dbCollections.USERS)
+      .findOne({ id: userIDThatHasNewFollower });
+
+    if (!userThatHasNewFollower) {
+      // this user does not exist in the db
+      return res
+        .status(500)
+        .send({
+          message:
+            "does not exist an user with a id: " + userIDThatHasNewFollower,
+        });
+    }
+
+    // here I'm sure that the use with id userIDThatHasNewFollower exist
+    const result = await mongo
+      .collection(dbCollections.USERS)
+      .updateOne(
+        { id: userId },
+        { $push: { following: userIDThatHasNewFollower } }
+      );
+
+    res.json(result);
+  }
 });
 
-// API 9 : ok
+// API 9 : OK
 // remove a following user with a given id
 // require authentication to determine the user who decide to not follow anymore another user
 router.delete("/social/followers/:id", authenticateToken, async (req, res) => {
   const userId = req.user.id;
   const userIdToRemoveFollow = parseInt(req.params.id);
-  
+
   const mongo = db.getDb();
 
   const result = await mongo
