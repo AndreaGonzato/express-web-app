@@ -38,7 +38,9 @@ function authenticateToken(req, res, next) {
 
 const router = express.Router();
 
-// TODO remove this, it is just an example
+// TODO GENERAL check that it dos not inject code in the api (attention to all the POST requests)
+
+// TODO remove this, it is just an example to verify that an user is authenticated
 router.get("/protected", authenticateToken, async (req, res) => {
   const userId = req.user.id;
 
@@ -48,14 +50,15 @@ router.get("/protected", authenticateToken, async (req, res) => {
   });
 });
 
-// TODO remove this get
+// TODO remove this get, it is just a test to see if the server is still alive
 router.get("/test", (req, res) => {
-  res.json({ message: "server is working" });
   console.log("I'm still alive");
+  res.json({ message: "server is working" });
 });
 
-// API 1 :
+// API 1 : OK
 // register a new user
+// input e.g. {"username": "uniqueUsername", "email":"someemail@gmail.com", "password":"pass", "name":"Matt", "surname":"Taylor", "bio":"my bio"}
 router.post("/auth/signup", async (req, res) => {
   const mongo = db.getDb();
   const user = req.body;
@@ -63,10 +66,19 @@ router.post("/auth/signup", async (req, res) => {
   const nextUserID = await dbManager.getNextId(dbCollections.USERS);
   user.id = nextUserID;
 
-  // check that the username is unique
+  if (user.username === undefined || user.email === undefined || user.password === undefined || user.name === undefined || user.surname === undefined || user.bio === undefined) {
+    return res.status(500).send({message : "you did not need to specify all the fields of user: (username, email, password, name, surname, bio)"});
+  }
 
-  await mongo.collection(dbCollections.USERS).insertOne(user);
-  res.json(user);
+  // check that the username is unique
+  const userWithSameUsername = await mongo.collection(dbCollections.USERS).findOne({username: user.username});
+  if(userWithSameUsername){
+    // it already exist an user with that username 
+    return res.status(500).send({message: "an user with username: "+userWithSameUsername.username +" already exist"});
+  }
+
+  const result = await mongo.collection(dbCollections.USERS).insertOne(user);
+  res.json(result);
 });
 
 // API 2 : OK
@@ -76,8 +88,6 @@ router.post("/auth/signin", async (req, res) => {
   const mongo = db.getDb();
 
   const postedUser = ({ email, password } = req.body);
-
-  // TODO check that it dos not inject code with user and password
 
   const user = await mongo.collection(dbCollections.USERS).findOne(postedUser);
 
@@ -191,12 +201,10 @@ router.post("/social/followers/:id", authenticateToken, async (req, res) => {
 
     if (!userThatHasNewFollower) {
       // this user does not exist in the db
-      return res
-        .status(500)
-        .send({
-          message:
-            "does not exist an user with a id: " + userIDThatHasNewFollower,
-        });
+      return res.status(500).send({
+        message:
+          "does not exist an user with a id: " + userIDThatHasNewFollower,
+      });
     }
 
     // here I'm sure that the use with id userIDThatHasNewFollower exist
@@ -350,7 +358,5 @@ router.get("/social/whoami", authenticateToken, async (req, res) => {
 
   res.json(user);
 });
-
-
 
 module.exports = router;

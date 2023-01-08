@@ -46,6 +46,7 @@ db.<collection-name>.find()
 Naming
 use of plural name for Mongo collection
 
+
 ## Observations
 
 Plural of express is expresses
@@ -54,7 +55,6 @@ Plural of express is expresses
 In an user document a record do not know who follow him. But every record store and know who is following.
 
 The in a document user there is no the liked_tweets filed.
-
 
 ## JWT
 slide at page 521
