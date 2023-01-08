@@ -21,13 +21,13 @@ function authenticateToken(req, res, next) {
   const token = authHeader && authHeader.split(" ")[1];
 
   if (token == null) {
-    res.status(401).send("Unauthorized");
+    return res.status(401).send("Unauthorized");
   }
 
   jwt.verify(token, JWT_SECRET, (err, authData) => {
     if (err) {
       console.error(err);
-      res.sendStatus(403);
+      return res.sendStatus(403);
     }
 
     // save the user data in the req obj

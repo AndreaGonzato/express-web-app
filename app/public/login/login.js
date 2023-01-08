@@ -63,7 +63,6 @@ function setJwtCookie(token) {
     // TODO add the httponly mode
     // Set the JWT
     document.cookie = "jwt=" + token + ";expires=" + expires.toUTCString();//";httponly";
-    console.log("saving a cookie: ", token);
 }
 
 function getCookie(name) {
