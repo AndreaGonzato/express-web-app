@@ -43,7 +43,7 @@ const router = express.Router();
 // TODO remove this, it is just an example to verify that an user is authenticated
 router.get("/protected", authenticateToken, async (req, res) => {
   const userId = req.user.id;
-
+  
   res.json({
     message: "you are in a protected part of the site",
     userId: userId,
@@ -67,7 +67,7 @@ router.post("/auth/signup", async (req, res) => {
   user.id = nextUserID;
 
   if (user.username === undefined || user.email === undefined || user.password === undefined || user.name === undefined || user.surname === undefined || user.bio === undefined) {
-    return res.status(500).send({message : "you did not need to specify all the fields of user: (username, email, password, name, surname, bio)"});
+    return res.status(500).send({message : "you need to specify all the fields of a user: (username, email, password, name, surname, bio)"});
   }
 
   // check that the username is unique
@@ -97,7 +97,7 @@ router.post("/auth/signin", async (req, res) => {
     res.status(400).send({ message: "User not found" });
   } else {
     const token = generateToken({ id: user.id });
-    res.send(token);
+    res.send({token});
   }
 });
 
