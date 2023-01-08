@@ -2,192 +2,184 @@ const express = require("express");
 
 const db = require("./database/db.js");
 const dbManager = require("./database/db-manager.js");
-const dbCollections = require('./database/collections.js');
-
+const dbCollections = require("./database/collections.js");
 
 // JWT
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv'); // to access .env file to load a secret password
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv"); // to access .env file to load a secret password
 // get config vars
 dotenv.config();
 // access config var
-const JWT_SECRET = process.env.TOKEN_SECRET; 
+const JWT_SECRET = process.env.TOKEN_SECRET;
 
-
-function generateToken(tokenContent) {    
-    return jwt.sign(tokenContent, JWT_SECRET, { expiresIn: '1d' });
+function generateToken(tokenContent) {
+  return jwt.sign(tokenContent, JWT_SECRET, { expiresIn: "1d" });
 }
-
 
 function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-  
-    if (token == null){
-        res.status(401).send("Unauthorized");
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (token == null) {
+    res.status(401).send("Unauthorized");
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, authData) => {
+    if (err) {
+      console.error(err);
+      res.sendStatus(403);
     }
-  
-    jwt.verify(token, JWT_SECRET, (err, authData) => {
-  
-        if (err){
-            console.error(err);
-            res.sendStatus(403);
-        }
-        
-        // save the user data in the req obj
-        req.user = authData;
-        next(); 
-    })
+
+    // save the user data in the req obj
+    req.user = authData;
+    next();
+  });
 }
-
-
 
 const router = express.Router();
 
-
 // TODO remove this, it is just an example
-router.get('/protected', authenticateToken, async (req, res) => {
-    const userId = req.user.id;
+router.get("/protected", authenticateToken, async (req, res) => {
+  const userId = req.user.id;
 
-    res.json({message: "you are in a protected part of the site", userId : userId})
+  res.json({
+    message: "you are in a protected part of the site",
+    userId: userId,
+  });
 });
 
 // TODO remove this get
-router.get('/test', (req, res) => {
-    res.json({message: "server is working"});
-    console.log("I'm still alive");
+router.get("/test", (req, res) => {
+  res.json({ message: "server is working" });
+  console.log("I'm still alive");
 });
 
-
-// API 1 : 
+// API 1 :
 // register a new user
 router.post("/auth/signup", async (req, res) => {
-    const mongo = db.getDb();
-    const user = req.body;
+  const mongo = db.getDb();
+  const user = req.body;
 
-    const nextUserID = await dbManager.getNextId(dbCollections.USERS);
-    user.id = nextUserID;
+  const nextUserID = await dbManager.getNextId(dbCollections.USERS);
+  user.id = nextUserID;
 
-    // check that the username is unique
+  // check that the username is unique
 
-    await mongo.collection(dbCollections.USERS).insertOne(user);
-    res.json(user);
+  await mongo.collection(dbCollections.USERS).insertOne(user);
+  res.json(user);
 });
-
-
 
 // API 2 : OK
-// login of a user 
+// login of a user
 // when a user sign in I give him a JWT token
 router.post("/auth/signin", async (req, res) => {
-    const mongo = db.getDb();    
+  const mongo = db.getDb();
 
-    const postedUser = { email, password } = req.body;
+  const postedUser = ({ email, password } = req.body);
 
-    // TODO check that it dos not inject code with user and password
+  // TODO check that it dos not inject code with user and password
 
-    const user = await mongo.collection(dbCollections.USERS).findOne(postedUser);
+  const user = await mongo.collection(dbCollections.USERS).findOne(postedUser);
 
-    if(!user){
-        // User not found: (email + password) does not match
-        res.status(400).send({ message: 'User not found' });
-    }else{
-        const token = generateToken({id : user.id});
-        res.send(token);
-    }
+  if (!user) {
+    // User not found: (email + password) does not match
+    res.status(400).send({ message: "User not found" });
+  } else {
+    const token = generateToken({ id: user.id });
+    res.send(token);
+  }
 });
-
-
 
 // API 3 : OK
 // show info of user with this id
 router.get("/social/users/:id", async (req, res) => {
-    const mongo = db.getDb();
-    const id = parseInt(req.params.id);
-    let user = await mongo.collection(dbCollections.USERS).findOne({'id' : id});
-    res.json(user);
+  const mongo = db.getDb();
+  const id = parseInt(req.params.id);
+  let user = await mongo.collection(dbCollections.USERS).findOne({ id: id });
+  res.json(user);
 });
-
 
 // API 4 : OK
 // list all the tweets of the user with this id
 router.get("/social/messages/:userId", async (req, res) => {
-    const mongo = db.getDb();
-    const user_id = parseInt(req.params.userId);
-    let tweets = await mongo.collection(dbCollections.TWEETS).find({author : user_id}).toArray();
-    res.json(tweets);
+  const mongo = db.getDb();
+  const user_id = parseInt(req.params.userId);
+  let tweets = await mongo
+    .collection(dbCollections.TWEETS)
+    .find({ author: user_id })
+    .toArray();
+  res.json(tweets);
 });
-
 
 // API 5 : OK
 // a singular tweet (idMsg) of the user (userID)
 router.get("/social/messages/:userId/:idMsg", async (req, res) => {
-    const mongo = db.getDb();
-    const user_id = parseInt(req.params.userId);
-    const message_id = parseInt(req.params.idMsg);
+  const mongo = db.getDb();
+  const user_id = parseInt(req.params.userId);
+  const message_id = parseInt(req.params.idMsg);
 
-    let tweet = await mongo.collection(dbCollections.TWEETS).findOne({id : message_id, author: user_id});
-    res.json(tweet);
+  let tweet = await mongo
+    .collection(dbCollections.TWEETS)
+    .findOne({ id: message_id, author: user_id });
+  res.json(tweet);
 });
-
 
 // API 6 : OK
 // create a new tweet
 // input: {"text": "a new Tweet"}
 router.post("/social/messages", authenticateToken, async (req, res) => {
-    const mongo = db.getDb();
-    const messageText = req.body.text;
+  const mongo = db.getDb();
+  const messageText = req.body.text;
 
-    const userID = req.user.id;
+  const userID = req.user.id;
 
-    const nextTweetID = await dbManager.getNextId(dbCollections.TWEETS);
+  const nextTweetID = await dbManager.getNextId(dbCollections.TWEETS);
 
-    const tweet = {
-        id: nextTweetID,
-        author: userID,
-        text: messageText,
-        created_at: new Date()
-    };
-    
-    const collection = mongo.collection(dbCollections.TWEETS);
+  const tweet = {
+    id: nextTweetID,
+    author: userID,
+    text: messageText,
+    created_at: new Date(),
+  };
 
-    await collection.insertOne(tweet);
+  const collection = mongo.collection(dbCollections.TWEETS);
 
-    res.json(tweet);
+  await collection.insertOne(tweet);
 
+  res.json(tweet);
 });
 
 // API 7 : OK
 // list all the followers of a user with a given id
 router.get("/social/followers/:id", async (req, res) => {
-    const mongo = db.getDb();
-    const userID = parseInt(req.params.id);
+  const mongo = db.getDb();
+  const userID = parseInt(req.params.id);
 
-    // e.g. : the following query will find the follower of the user with id equal to 1
-    // db.users.find({following : { $in : [1] }})
-    const query = {following : {$in : [userID] }};
-    const users = await mongo.collection(dbCollections.USERS).find(query).toArray();
+  // e.g. : the following query will find the follower of the user with id equal to 1
+  // db.users.find({following : { $in : [1] }})
+  const query = { following: { $in: [userID] } };
+  const users = await mongo
+    .collection(dbCollections.USERS)
+    .find(query)
+    .toArray();
 
-    res.json(users);
+  res.json(users);
 });
-
 
 // API 8 : REDO AFTER AUTHENTICATION
-// add a new follow to the user with the given id 
+// add a new follow to the user with the given id
 // Aggiunta di un nuovo follow per l’utente id
-// PROBLEM: whom I'am? I need to add a following to the current authenticated user 
+// PROBLEM: whom I'am? I need to add a following to the current authenticated user
 router.post("/social/followers/:id", async (req, res) => {
-    const mongo = db.getDb();
-    const userIDThatHasNewFollower = parseInt(req.params.id);
+  const mongo = db.getDb();
+  const userIDThatHasNewFollower = parseInt(req.params.id);
 
-    const response = {
-        val: "this API is not implemented yet"
-    }
+  const response = {
+    val: "this API is not implemented yet",
+  };
 
-    res.json(tweet);
-
+  res.json(tweet);
 });
-
 
 // API 9 : DO AFTER AUTHENTICATION
 // DELETE /api/social/followers/:id Rimozione del follow all’utente id
@@ -195,99 +187,124 @@ router.post("/social/followers/:id", async (req, res) => {
 // API 10 : OK
 // list all the messages of the following users
 router.get("/social/feed", authenticateToken, async (req, res) => {
-    const mongo = db.getDb();
-    const userId = req.user.id;
-    const user = await mongo.collection(dbCollections.USERS).findOne({id : userId});
+  const mongo = db.getDb();
+  const userId = req.user.id;
+  const user = await mongo
+    .collection(dbCollections.USERS)
+    .findOne({ id: userId });
 
-    const following = user.following;
-    let output = {messages: []};
+  const following = user.following;
+  let output = { messages: [] };
 
-    for (let i = 0; i < following.length; i++) {
-        const messagesOfFollowingUserI = await mongo.collection(dbCollections.TWEETS).find({author: following[i]}).toArray();
-        
-        messagesOfFollowingUserI.forEach(message => {
-            output.messages.push(message)
-        });
-        
-    }
+  for (let i = 0; i < following.length; i++) {
+    const messagesOfFollowingUserI = await mongo
+      .collection(dbCollections.TWEETS)
+      .find({ author: following[i] })
+      .toArray();
 
-    output.messages.sort(function(a, b) {
-        let dateA = new Date(a.created_at);
-        let dateB = new Date(b.created_at);
-        return dateB - dateA;
+    messagesOfFollowingUserI.forEach((message) => {
+      output.messages.push(message);
     });
+  }
 
-    res.json(output);
+  output.messages.sort(function (a, b) {
+    let dateA = new Date(a.created_at);
+    let dateB = new Date(b.created_at);
+    return dateB - dateA;
+  });
+
+  res.json(output);
 });
 
+// API 11 : TEST it when i pass an id that it does not exist
+// like to an message with a given ID
+// require authentication to determine the user who is putting the like
+router.post("/social/like/:idMessage", authenticateToken, async (req, res) => {
+  const userID = req.user.id;
+  const messageID = parseInt(req.params.idMessage);
 
-// API 11 : DO AFTER AUTHENTICATION
-// POST /api/social/like/:idMessage Like ad un messaggio con ID idMessage
+  const mongo = db.getDb();
+
+  //e.g. this query add a like to the message with id 20 by the user with id 1
+  //db.tweets.updateOne({id:20}, {$push: {likes: 1}});
+
+  let message = await mongo
+    .collection(dbCollections.TWEETS)
+    .findOne({ id: messageID });
+
+  if (!message) {
+    // we don't have a message -> there is no message with this id
+    // TODO the server crash if enter to this if, solve it
+    res.send({
+      message: "It dos not exist a message with this id: " + messageID,
+    });
+  }
+
+  let list = message.likes;
+  if (list.includes(userID)) {
+    // the user with userID has already put a like to this message previously
+    res.send({ message: "you already put a like to this message previously" });
+  } else {
+    // add a like to the message
+    const result = await mongo
+      .collection(dbCollections.TWEETS)
+      .updateOne({ id: messageID }, { $push: { likes: userID } });
+    res.send({ result });
+  }
+});
 
 // API 12 : OK
 // delete a like to the message with a given id
 // require authentication to determine the user who remove the like
-router.delete("/social/like/:idMessage", authenticateToken, async (req, res) => {
+router.delete(
+  "/social/like/:idMessage",
+  authenticateToken,
+  async (req, res) => {
     const userId = req.user.id;
-    const idMessage = parseInt(req.params.idMessage);
+    const messageID = parseInt(req.params.idMessage);
 
     const mongo = db.getDb();
 
     // e.g. the following query remove the like of the user with id 1 to the message with id 20 (if has this like)
     // db.tweets.updateOne({id:20}, {$pull: {likes: 1}});
-    const result = await mongo.collection(dbCollections.TWEETS).updateOne({id:idMessage}, {$pull: {likes: userId}});
+    const result = await mongo
+      .collection(dbCollections.TWEETS)
+      .updateOne({ id: messageID }, { $pull: { likes: userId } });
 
-    res.send({result});
-}); 
-
+    res.send({ result });
+  }
+);
 
 // API 13 : OK
 // GET /api/social/search?q=query
 // Remember that JSON format use double quotes for the attribute definition. e.g. {"id" : 1}
 // find the user that match the query string
 router.get("/social/search", async (req, res) => {
-    const mongo = db.getDb();
-    const queryString = req.query.q;
-    const queryObj = JSON.parse(queryString);
+  const mongo = db.getDb();
+  const queryString = req.query.q;
+  const queryObj = JSON.parse(queryString);
 
-    const users = await mongo.collection(dbCollections.USERS).find(queryObj).toArray();
+  const users = await mongo
+    .collection(dbCollections.USERS)
+    .find(queryObj)
+    .toArray();
 
-    res.json(users);
+  res.json(users);
 });
-
 
 // API 14 : OK
 // if the user is authenticated return the user info
 router.get("/social/whoami", authenticateToken, async (req, res) => {
-    const mongo = db.getDb();
+  const mongo = db.getDb();
 
-    const userId = req.user.id;
+  const userId = req.user.id;
 
-    const user = await mongo.collection(dbCollections.USERS).findOne({id : userId});
+  const user = await mongo
+    .collection(dbCollections.USERS)
+    .findOne({ id: userId });
 
-    res.json(user);
+  res.json(user);
 });
-
-
-
-
-
-
-
-
-
-
-/*
-router.get("/social/users", async (req, res) => {
-    const mongo = db.getDb();
-    let users = await mongo.collection(db.USERS_COLLECTION_NAME).find().toArray();
-    res.json(users);
-});
-
-*/
-
-
-
 
 /*
 

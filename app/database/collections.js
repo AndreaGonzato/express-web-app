@@ -3,6 +3,25 @@ const dbCollections = {
     TWEETS : "tweets"
 };
 
+/*
+const users = {
+    id: "id",
+    username,
+    email,
+    password,
+    name: "name",
+    surname,
+    bio
+}
+
+const tweets = {
+    id,
+    author,
+    text,
+    likes,
+    created_at
+}
+*/
 
 // this do not permit to change the the attribute USERS of the Collections
 Object.defineProperty(dbCollections, "USERS", {
@@ -19,5 +38,7 @@ Object.defineProperty(dbCollections, "TWEETS", {
 
 
 module.exports = dbCollections;
+//module.exports.users = users;
+//module.exports.tweets = tweets;
 
 
