@@ -16,3 +16,10 @@ export default{
   components : {TheNavigation}
 }
 </script>
+
+
+<style scoped>
+
+
+
+</style>
