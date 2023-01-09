@@ -15,8 +15,14 @@ export default{
 
 <style scoped>
 
+h1{
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
 .home{
     text-align: center;
 }
+
 
 </style>

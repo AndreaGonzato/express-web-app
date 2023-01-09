@@ -7,9 +7,18 @@
         </div>
 
         <div class="nav">
-            <router-link to="/">Home</router-link>
-            <router-link to="/login">Login</router-link>
-            <router-link to="/about">About</router-link>
+            <span>
+                <router-link to="/">Home</router-link>
+            </span>
+            
+            <span>
+                <router-link to="/login">Login</router-link>
+            </span>
+
+            <span>
+                <router-link to="/about">About</router-link>
+            </span>
+
         </div>
 
     </div>
@@ -25,13 +34,19 @@
 
 <style scoped>
 
-.logo{
-    text-align: center;
-}
+
 
 img{
     height: 60px;
     width: 60px;
+}
+
+span{
+    margin-left: 2em;
+}
+
+.logo{
+    text-align: center;
 }
 
 .wrapper {
@@ -46,7 +61,5 @@ img{
     padding: 0.5rem;
     text-align: center;
 }
-
-
 
 </style>

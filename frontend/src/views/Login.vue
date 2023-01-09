@@ -5,12 +5,12 @@
     <form>
       <div class="mb-3">
         <label for="emailID" class="form-label">email</label>
-        <input type="text" id="emailID" name="email" class="form-control"/>
+        <input type="text" v-model="email" id="emailID" name="email" class="form-control"/>
       </div>
 
       <div class="mb-3">
         <label for="passID" class="form-label">password</label>
-        <input type="password" id="passID" name="password" class="form-control"/>
+        <input type="password" v-model="password" id="passID" name="password" class="form-control"/>
       </div>
 
       <button @click.prevent="login" class="btn btn-primary">Login</button>
@@ -24,9 +24,17 @@
 
 <script>
 export default {
+  name: "Login",
+  data() {
+    return {
+      email: "",
+      password: ""
+    }
+  },
   methods: {
     async login(e) {
-      console.log("hi there");
+      console.log("email: "+this.email);
+      console.log("password: "+this.password);
       
 
         const response = await fetch('http://localhost:3000/api/test')
