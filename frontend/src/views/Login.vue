@@ -50,6 +50,11 @@ h1{
 }
 
 
+.mb-3{
+  max-width: 350px;
+  margin: auto;
+}
+
 .login {
   text-align: center;
 }
