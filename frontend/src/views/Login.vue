@@ -48,7 +48,7 @@ export default {
     };
   },
   methods: {
-    async test1(){
+    async test1() {
       const response = await fetch("http://localhost:3000/api/test");
       const data = await response.json();
       console.log(data);
@@ -57,7 +57,7 @@ export default {
         .then((response) => response.json())
         .then((json) => console.log(json));
     },
-    async test2(){
+    async test2() {
       var jwt = this.getCookie("jwt");
 
       // Set the Authorization header of the request
@@ -65,9 +65,9 @@ export default {
       headers.append("Authorization", "Bearer " + jwt);
 
       // Use the JWT token in an HTTP header
-      const result = await fetch('http://localhost:3000/api/protected', {
-          method: "GET",
-          headers: headers
+      const result = await fetch("http://localhost:3000/api/protected", {
+        method: "GET",
+        headers: headers,
       });
 
       const objResult = await result.json();
@@ -82,8 +82,14 @@ export default {
 
       const objToken = await token.json();
 
-      // save the jwt in cookie
-     this.setJwtCookie(objToken.token);
+      
+      if (objToken.token !== undefined) {
+        // save the jwt in cookie
+        this.setJwtCookie(objToken.token);
+      } else {
+        // wrong credential (defined by the protocol, the objToken has the attribute token if the user posted the right credentials)
+        console.log("user credentials are wrong");
+      }
     },
     setJwtCookie(token) {
       // Set the expiration date to one hour from now
