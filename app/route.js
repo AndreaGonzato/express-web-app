@@ -38,6 +38,15 @@ function authenticateToken(req, res, next) {
 
 const router = express.Router();
 
+
+// TODO can i restrict and make more secure my access policy?
+//this permit to get a fetch from all the domain and port
+router.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+})
+
+
 // TODO GENERAL check that it dos not inject code in the api (attention to all the POST requests)
 
 // TODO remove this, it is just an example to verify that an user is authenticated
