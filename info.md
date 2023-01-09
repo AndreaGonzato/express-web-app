@@ -62,17 +62,14 @@ slide at page 521
 in the token i put only the user.id
 
 
-
-
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-eyJ1c2VySWQiOjEsImlhdCI6MTY3MzAzMDQ1MywiZXhwIjoxNjczMTE2ODUzfQ.
-I9vVprGQrgg3AXDWF4tPkQWMWKA8BonyR3qxE7grO7Y"
-
-
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-eyJ1c2VySWQiOjEsImlhdCI6MTY3MzAzMDQ3NCwiZXhwIjoxNjczMTE2ODc0fQ.
-wbUCRc8xm5T6kDpTInjGWZRL63xBUmUlzZdVQrXC9Gg"
+# frontend
+to start
+```
+cd frontend
+npm run dev
+```
 
 
 
+continue to test auth fetch from frontend
 continue to improve API 11

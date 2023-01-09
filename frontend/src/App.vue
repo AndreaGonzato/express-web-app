@@ -1,9 +1,5 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link>
-    <router-link to="/login">Login</router-link>
-    <router-link to="/about">About</router-link>
-  </div>
+  <TheNavigation></TheNavigation>
 
   <div class="container">
     <routerView></routerView>
@@ -11,3 +7,12 @@
 
 </template>
 
+
+<script>
+
+import TheNavigation from './components/TheNavigation.vue';
+
+export default{
+  components : {TheNavigation}
+}
+</script>
