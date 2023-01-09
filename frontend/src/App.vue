@@ -10,16 +10,14 @@
 
 <script>
 
-import TheNavigation from './components/TheNavigation.vue';
+  import TheNavigation from './components/TheNavigation.vue';
 
-export default{
-  components : {TheNavigation}
-}
+  export default{
+    components : {TheNavigation}
+  }
 </script>
 
 
 <style scoped>
-
-
 
 </style>
