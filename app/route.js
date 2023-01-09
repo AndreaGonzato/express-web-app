@@ -43,6 +43,7 @@ const router = express.Router();
 //this permit to get a fetch from all the domain and port
 router.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', '*');
   next();
 })
 
@@ -95,6 +96,8 @@ router.post("/auth/signup", async (req, res) => {
 // when a user sign in I give him a JWT token
 // e.g of an input: {"email" : "myEmail@gmail.com", "password" : "myPassword"}
 router.post("/auth/signin", async (req, res) => {
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
+
   const mongo = db.getDb();
 
   const postedUser = ({ email, password } = req.body);
