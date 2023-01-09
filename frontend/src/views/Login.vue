@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     async test1(){
-      console.log("test1, no auth required");
       const response = await fetch("http://localhost:3000/api/test");
       const data = await response.json();
       console.log(data);
@@ -59,8 +58,6 @@ export default {
         .then((json) => console.log(json));
     },
     async test2(){
-      console.log("clicked btn2");
-
       var jwt = this.getCookie("jwt");
 
       // Set the Authorization header of the request
@@ -77,9 +74,6 @@ export default {
       console.log(objResult);
     },
     async login() {
-      console.log("email: " + this.email);
-      console.log("password: " + this.password);
-
       const token = await fetch("http://localhost:3000/api/auth/signin", {
         method: "POST",
         headers: { "Content-type": "application/json" },
@@ -88,21 +82,8 @@ export default {
 
       const objToken = await token.json();
 
-      //TODO remove
-      console.log("saving token", objToken.token);
-
       // save the jwt in cookie
      this.setJwtCookie(objToken.token);
-
-      /*
-      const response = await fetch("http://localhost:3000/api/test");
-      const data = await response.json();
-      console.log(data);
-
-      const result = await fetch("http://localhost:3000/api/social/followers/5")
-        .then((response) => response.json())
-        .then((json) => console.log(json));
-        */
     },
     setJwtCookie(token) {
       // Set the expiration date to one hour from now
