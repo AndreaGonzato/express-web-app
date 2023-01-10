@@ -2,6 +2,8 @@
   <div class="signup">
     <h1>Signup</h1>
 
+    <p>Please fill this form to create an account!</p>
+
     <form>
       <div class="row">
         <div class="col">
@@ -24,46 +26,41 @@
         </div>
       </div>
 
-      <div class="mb-3">
-        <label for="usernameID" class="form-label">username</label>
+      <div class="row">
         <input
           type="text"
           v-model="username"
-          id="usernameID"
           name="email"
           class="form-control"
+          placeholder="Username"
         />
       </div>
 
-      <div class="mb-3">
-        <label for="emailID" class="form-label">email</label>
+      <div class="row">
         <input
           type="text"
           v-model="email"
-          id="emailID"
           name="email"
           class="form-control"
+          placeholder="Email"
         />
       </div>
 
-      <div class="mb-3">
-        <label for="passID" class="form-label">password</label>
+      <div class="row">
         <input
           type="password"
           v-model="password"
-          id="passID"
           name="password"
           class="form-control"
+          placeholder="Password"
         />
       </div>
 
       <button @click.prevent="login" class="btn btn-primary">Sign up</button>
     </form>
 
-    <p>
-      name: {{ this.name }} surname: {{ this.surname }} username:
-      {{ this.username }} email: {{ this.email }} password: {{ this.password }}
-    </p>
+
+    <p>Already have an account? <router-link to="/login">Login here</router-link></p>
   </div>
 </template>
 
@@ -84,17 +81,22 @@ export default {
 </script>
 
 <style scoped>
+
+h1{
+    margin-bottom: 1em;
+}
+
+button{
+    margin-bottom: 1em;
+}
+
 .signup {
   text-align: center;
 }
 
-.mb-3 {
+.row {
   max-width: 350px;
   margin: auto;
-}
-
-.row{
-    max-width: 350px;
-    margin: auto;
+  margin-bottom: 1em;
 }
 </style>
