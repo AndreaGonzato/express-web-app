@@ -39,21 +39,25 @@
 </template>
 
 <script>
+
+import config from '@/config.js'
+
 export default {
   name: "Login",
   data() {
     return {
       email: "",
       password: "",
+      hostname: config.hostname
     };
   },
   methods: {
     async test1() {
-      const response = await fetch("http://localhost:3000/api/test");
+      const response = await fetch(this.hostname+"/api/test");
       const data = await response.json();
       console.log(data);
 
-      const result = await fetch("http://localhost:3000/api/social/followers/5")
+      const result = await fetch(this.hostname+"/api/social/followers/5")
         .then((response) => response.json())
         .then((json) => console.log(json));
     },
@@ -65,7 +69,7 @@ export default {
       headers.append("Authorization", "Bearer " + jwt);
 
       // Use the JWT token in an HTTP header
-      const result = await fetch("http://localhost:3000/api/protected", {
+      const result = await fetch(this.hostname+"/api/protected", {
         method: "GET",
         headers: headers,
       });
@@ -74,7 +78,7 @@ export default {
       console.log(objResult);
     },
     async login() {
-      const token = await fetch("http://localhost:3000/api/auth/signin", {
+      const token = await fetch(this.hostname+"/api/auth/signin", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ email: this.email, password: this.password }),

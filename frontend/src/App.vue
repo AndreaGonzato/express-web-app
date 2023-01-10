@@ -13,7 +13,12 @@
   import TheNavigation from './components/TheNavigation.vue';
 
   export default{
-    components : {TheNavigation}
+    components : {TheNavigation},
+    data(){
+      return {
+        URL_SITE: "http://localhost"
+      }
+    }
   }
 </script>
 
