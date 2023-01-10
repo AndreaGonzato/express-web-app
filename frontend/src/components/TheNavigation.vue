@@ -10,13 +10,13 @@
             <span>
                 <router-link to="/">Home</router-link>
             </span>
+
+            <span>
+                <router-link to="/signup">Signup</router-link>
+            </span>
             
             <span>
                 <router-link to="/login">Login</router-link>
-            </span>
-
-            <span>
-                <router-link to="/about">About</router-link>
             </span>
 
         </div>

@@ -1,13 +1,13 @@
 <template>
-    <div class="about">
-        <h1>About</h1>
+    <div class="signup">
+        <h1>Signup</h1>
     </div>
 </template>
 
 
 <style scoped>
 
-.about{
+.signup{
     text-align: center;
 }
 </style>
