@@ -56,15 +56,18 @@
         />
       </div>
 
-      <button @click.prevent="login" class="btn btn-primary">Sign up</button>
+      <button @click.prevent="signup" class="btn btn-primary">Sign up</button>
     </form>
 
-
-    <p>Already have an account? <router-link to="/login">Login here</router-link></p>
+    <p>
+      Already have an account? <router-link to="/login">Login here</router-link>
+    </p>
   </div>
 </template>
 
 <script>
+import config from "@/config.js";
+
 export default {
   name: "Signup",
   data() {
@@ -75,19 +78,42 @@ export default {
       name: "",
       surname: "",
       bio: "Hi! I'm on Express",
+      hostname: config.hostname,
     };
+  },
+  methods: {
+    async signup() {
+      const postRequest = await fetch(this.hostname + "/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({
+          username: this.username,
+          email: this.email,
+          password: this.password,
+          name: this.name,
+          surname: this.surname,
+          bio: this.bio,
+        }),
+      });
+
+      const obj = await postRequest.json();
+      if(obj.insertedId !== undefined){
+        // OK, user inserted in the DB
+      }else{
+        // user not inserted
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
-
-h1{
-    margin-bottom: 1em;
+h1 {
+  margin-bottom: 1em;
 }
 
-button{
-    margin-bottom: 1em;
+button {
+  margin-bottom: 1em;
 }
 
 .signup {
