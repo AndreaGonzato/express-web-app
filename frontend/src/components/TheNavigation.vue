@@ -1,52 +1,46 @@
 <template>
-
-    <div class="wrapper">
-
-        <div class="logo">
-            <img src="/images/expressLogoLow.jpg" alt="logo"/>
-        </div>
-
-        <div class="nav">
-            <span>
-                <router-link to="/">Home</router-link>
-            </span>
-
-            <span>
-                <router-link to="/signup">Signup</router-link>
-            </span>
-            
-            <span>
-                <router-link to="/login">Login</router-link>
-            </span>
-
-        </div>
-
+  <div class="wrapper">
+    <div class="logo">
+      <router-link to="/"
+        ><img src="/images/logo.png" alt="logo"
+      /></router-link>
     </div>
 
+    <div class="nav">
+      <span>
+        <router-link to="/">Home</router-link>
+      </span>
+
+      <span>
+        <router-link to="/signup">Signup</router-link>
+      </span>
+
+      <span>
+        <router-link to="/login">Login</router-link>
+      </span>
+    </div>
+  </div>
 </template>
 
 <script>
-  export default {
-    name: 'TheNavigation',
-  }
-
+export default {
+  name: "TheNavigation",
+};
 </script>
 
 <style scoped>
-
-
-
-img{
-    height: 60px;
-    width: 60px;
+img {
+  height: 50px;
+  width: 50px;
+  margin-top: 1%;
 }
 
-span{
-    margin-left: 2em;
+span {
+  margin-left: 2em;
 }
 
-.logo{
-    text-align: center;
+.logo {
+  text-align: center;
 }
 
 .wrapper {
@@ -56,10 +50,8 @@ span{
   color: black;
 }
 
-
-.nav{
-    padding: 0.5rem;
-    text-align: center;
+.nav {
+  padding: 0.5rem;
+  text-align: center;
 }
-
 </style>

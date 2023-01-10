@@ -24,16 +24,14 @@
       </div>
 
       <button @click.prevent="login" class="btn btn-primary">Login</button>
-
     </form>
 
-    <p>Not a member? <router-link to="/signup">Sign up now</router-link> </p>
+    <p>Not a member? <router-link to="/signup">Sign up now</router-link></p>
   </div>
 </template>
 
 <script>
-
-import config from '@/config.js'
+import config from "@/config.js";
 
 export default {
   name: "Login",
@@ -41,16 +39,16 @@ export default {
     return {
       email: "",
       password: "",
-      hostname: config.hostname
+      hostname: config.hostname,
     };
   },
   methods: {
     async test1() {
-      const response = await fetch(this.hostname+"/api/test");
+      const response = await fetch(this.hostname + "/api/test");
       const data = await response.json();
       console.log(data);
 
-      const result = await fetch(this.hostname+"/api/social/followers/5")
+      const result = await fetch(this.hostname + "/api/social/followers/5")
         .then((response) => response.json())
         .then((json) => console.log(json));
     },
@@ -62,7 +60,7 @@ export default {
       headers.append("Authorization", "Bearer " + jwt);
 
       // Use the JWT token in an HTTP header
-      const result = await fetch(this.hostname+"/api/protected", {
+      const result = await fetch(this.hostname + "/api/protected", {
         method: "GET",
         headers: headers,
       });
@@ -71,7 +69,7 @@ export default {
       console.log(objResult);
     },
     async login() {
-      const token = await fetch(this.hostname+"/api/auth/signin", {
+      const token = await fetch(this.hostname + "/api/auth/signin", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ email: this.email, password: this.password }),
@@ -79,7 +77,6 @@ export default {
 
       const objToken = await token.json();
 
-      
       if (objToken.token !== undefined) {
         // save the jwt in cookie
         this.setJwtCookie(objToken.token);
@@ -123,7 +120,7 @@ h1 {
   padding-bottom: 1.5em;
 }
 
-button{
+button {
   margin-bottom: 1em;
 }
 
