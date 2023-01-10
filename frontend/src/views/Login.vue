@@ -4,22 +4,20 @@
 
     <form>
       <div class="mb-3">
-        <label for="emailID" class="form-label">email</label>
         <input
           type="text"
           v-model="email"
-          id="emailID"
+          placeholder="Email"
           name="email"
           class="form-control"
         />
       </div>
 
       <div class="mb-3">
-        <label for="passID" class="form-label">password</label>
         <input
           type="password"
           v-model="password"
-          id="passID"
+          placeholder="Password"
           name="password"
           class="form-control"
         />
@@ -27,14 +25,9 @@
 
       <button @click.prevent="login" class="btn btn-primary">Login</button>
 
-      <div class="test1">
-        <button @click.prevent="test1" class="btn btn-primary">Test1</button>
-      </div>
-
-      <div class="test2">
-        <button @click.prevent="test2" class="btn btn-primary">Test2</button>
-      </div>
     </form>
+
+    <p>Not a member? <router-link to="/signup">Sign up now</router-link> </p>
   </div>
 </template>
 
@@ -128,6 +121,10 @@ export default {
 <style scoped>
 h1 {
   padding-bottom: 1.5em;
+}
+
+button{
+  margin-bottom: 1em;
 }
 
 .mb-3 {
