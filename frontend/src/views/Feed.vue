@@ -8,7 +8,10 @@
 
     <div v-for="content in contents">
       <div class="content">
-        <TheTweet v-bind:content-obj="content"></TheTweet>
+        <TheTweet
+          v-bind:content-obj="content"
+          v-bind:likes-number="content.likes ? content.likes.length : 0"
+        ></TheTweet>
 
         <hr />
       </div>
