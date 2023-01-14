@@ -287,16 +287,21 @@ router.get("/social/feed", authenticateToken, async (req, res) => {
   let output = { messages: [] };
 
   for (let i = 0; i < following.length; i++) {
+    const userI = await mongo.collection(dbCollections.USERS).findOne({id: following[i]});
+
     const messagesOfFollowingUserI = await mongo
       .collection(dbCollections.TWEETS)
       .find({ author: following[i] })
       .toArray();
-
+    
+    
     messagesOfFollowingUserI.forEach((message) => {
+      message.author_username = userI.username;
       output.messages.push(message);
     });
   }
 
+  // sort by the field created_at
   output.messages.sort(function (a, b) {
     let dateA = new Date(a.created_at);
     let dateB = new Date(b.created_at);
