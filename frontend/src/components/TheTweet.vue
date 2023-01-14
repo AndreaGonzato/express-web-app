@@ -22,17 +22,27 @@ export default {
   props: {
     contentObj: Object,
     likesNumber: Number,
-    userId : Number
+    userId: Number,
   },
-  data(){
+  data() {
     return {
-        likeStyle: 'fa-regular',
-        liked: false
+      likeStyle: "fa-regular",
+      liked: false,
+    };
+  },
+  created() {
+    if (
+      this.contentObj.likes !== undefined &&
+      this.contentObj.likes.includes(this.userId)
+    ) {
+      // you put like in a previous session
+      this.likeStyle = "fa-solid";
+      this.liked = true;
     }
   },
-  methods:{
-    clickOnLike(){
-        if (this.contentObj.likes === undefined) {
+  methods: {
+    clickOnLike() {
+      if (this.contentObj.likes === undefined) {
         // add the first like to this content
         this.contentObj.likes = [];
         this.postLike();
@@ -61,7 +71,7 @@ export default {
       headers.append("Content-type", "application/json");
 
       const postRequest = await fetch(
-        config.hostname + "/api/social/like/"+ this.contentObj.id,
+        config.hostname + "/api/social/like/" + this.contentObj.id,
         {
           method: "POST",
           headers,
@@ -96,7 +106,7 @@ export default {
       );
 
       //const obj = await postRequest.json();
-    }
-  }
+    },
+  },
 };
 </script>
