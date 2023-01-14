@@ -11,11 +11,11 @@
         <router-link to="/">Home</router-link>
       </span>
 
-      <span>
+      <span v-if="!userLogged">
         <router-link to="/signup">Signup</router-link>
       </span>
 
-      <span>
+      <span v-if="!userLogged">
         <router-link to="/login">Login</router-link>
       </span>
     </div>
@@ -25,6 +25,9 @@
 <script>
 export default {
   name: "TheNavigation",
+  props : {
+    userLogged : Boolean
+  },
 };
 </script>
 

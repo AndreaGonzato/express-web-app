@@ -32,6 +32,7 @@
 
 <script>
 import config from "@/config.js";
+import cookieManager from "@/cookieManager.js";
 
 export default {
   name: "Login",
@@ -54,7 +55,14 @@ export default {
 
       if (objToken.token !== undefined) {
         // save the jwt in cookie
-        this.setJwtCookie(objToken.token);
+        cookieManager.setJwtCookie(objToken.token);
+
+
+        // tell the app to show account in the nav menu and remove login and signin
+        this.$emit("message", { userLogged: true });
+
+        // go the the Feed page
+        this.$router.push({ name: "Feed" });
       } else {
         // wrong credential (defined by the protocol, the objToken has the attribute token if the user posted the right credentials)
         console.log("user credentials are wrong");

@@ -1,8 +1,8 @@
 <template>
-  <TheNavigation></TheNavigation>
+  <TheNavigation v-bind:user-logged="this.showAccount"></TheNavigation>
 
   <div class="container">
-    <routerView></routerView>
+    <routerView @message="handleMessage"></routerView>
   </div>
 </template>
 
@@ -14,8 +14,14 @@ export default {
   data() {
     return {
       URL_SITE: "http://localhost",
+      userLogged : false
     };
   },
+  methods: {
+    handleMessage(message){
+      this.userLogged = message.userLogged;
+    }
+  }
 };
 </script>
 
