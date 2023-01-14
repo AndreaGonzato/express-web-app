@@ -8,13 +8,11 @@
 
     <div v-for="content in contents">
       <div class="content">
+        <TheTweet v-bind:content-obj="content"></TheTweet>
 
-        <TheTweet v-bind:content-obj="content" ></TheTweet>
-
-        <hr/>
+        <hr />
       </div>
     </div>
-
   </div>
 </template>
 
@@ -29,21 +27,22 @@ export default {
   data() {
     return {
       contents: [{}],
-      userObj : Object,
-      showID: false,
+      userObj: Object,
+      loadUserObj: false,
     };
   },
-  components:{
-    TheTweet
+  components: {
+    TheTweet,
   },
   async created() {
+    // tell the app to show account in the nav menu and remove login and signin
+    this.$emit("message", { userLogged: true });
+
     const user = await userManager.whoami();
     this.userObj = user;
     this.loadUserObj = true;
 
     await this.fetchFeedContents();
-
-
   },
   methods: {
     async fetchFeedContents() {
@@ -66,14 +65,14 @@ export default {
 </script>
 
 <style scoped>
-hr{
-    max-width: 400px;
-    margin: auto;
+hr {
+  max-width: 400px;
+  margin: auto;
 }
 .all {
   text-align: center;
 }
-.welcome{
-    margin-bottom: 2em;
+.welcome {
+  margin-bottom: 2em;
 }
 </style>

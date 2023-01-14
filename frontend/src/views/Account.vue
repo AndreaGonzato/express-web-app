@@ -5,7 +5,7 @@
     <div class="container text-center info">
       <div class="row align-items-start">
         <div class="col data-type">Name:</div>
-        <div class="col data">{{ getName}}</div>
+        <div class="col data">{{ getName }}</div>
       </div>
       <div class="row align-items-start">
         <div class="col data-type">Surname:</div>
@@ -41,8 +41,11 @@ export default {
       surname: "",
       username: "",
       email: "",
-      bio : ''
+      bio: "",
     };
+  },
+  created(){
+    this.$emit("message", { userLogged: true });
   },
   async mounted() {
     const user = await userManager.whoami();
@@ -53,12 +56,12 @@ export default {
     this.bio = user.bio;
   },
   computed: {
-    getName(){
-        return  this.name.charAt(0).toUpperCase() + this.name.substring(1);
+    getName() {
+      return this.name.charAt(0).toUpperCase() + this.name.substring(1);
     },
-    getSurname(){
-        return  this.surname.charAt(0).toUpperCase() + this.surname.substring(1);
-    }
+    getSurname() {
+      return this.surname.charAt(0).toUpperCase() + this.surname.substring(1);
+    },
   },
   methods: {
     logout() {

@@ -379,11 +379,6 @@ db.users.find({following : { $in : [1] }})
 
 
 
-
-
-
-
-
 //ERROR this have double quotes for the attribute definition that is wrong
 
 db.users.insertMany([
