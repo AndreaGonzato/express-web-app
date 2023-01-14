@@ -43,31 +43,6 @@ export default {
     };
   },
   methods: {
-    async test1() {
-      const response = await fetch(this.hostname + "/api/test");
-      const data = await response.json();
-      console.log(data);
-
-      const result = await fetch(this.hostname + "/api/social/followers/5")
-        .then((response) => response.json())
-        .then((json) => console.log(json));
-    },
-    async test2() {
-      var jwt = this.getCookie("jwt");
-
-      // Set the Authorization header of the request
-      var headers = new Headers();
-      headers.append("Authorization", "Bearer " + jwt);
-
-      // Use the JWT token in an HTTP header
-      const result = await fetch(this.hostname + "/api/protected", {
-        method: "GET",
-        headers: headers,
-      });
-
-      const objResult = await result.json();
-      console.log(objResult);
-    },
     async login() {
       const token = await fetch(this.hostname + "/api/auth/signin", {
         method: "POST",
