@@ -82,8 +82,10 @@ export default {
   },
   methods: {
     async signup() {
+
       // check the user input
-      if(this.checkInputData()){
+      if(this.errorInputData()){
+        // there are some error in the input data
         return;
       }
 
@@ -113,7 +115,7 @@ export default {
         });
       }
     },
-    checkInputData() {
+    errorInputData() {
       let error = false;
 
       // check that each field has at least one char

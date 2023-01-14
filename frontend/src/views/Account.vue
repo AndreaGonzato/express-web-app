@@ -19,6 +19,10 @@
         <div class="col data-type">Email:</div>
         <div class="col data">{{ this.email }}</div>
       </div>
+      <div class="row align-items-start">
+        <div class="col data-type">Bio:</div>
+        <div class="col data">{{ this.bio }}</div>
+      </div>
     </div>
 
     <button @click.prevent="logout" class="btn btn-danger">Log out</button>
@@ -37,6 +41,7 @@ export default {
       surname: "",
       username: "",
       email: "",
+      bio : ''
     };
   },
   async mounted() {
@@ -45,13 +50,14 @@ export default {
     this.surname = user.surname;
     this.username = user.username;
     this.email = user.email;
+    this.bio = user.bio;
   },
   computed: {
     getName(){
-        return  this.name.charAt(0).toUpperCase() + this.name.substring(1) ;
+        return  this.name.charAt(0).toUpperCase() + this.name.substring(1);
     },
     getSurname(){
-        return  this.surname.charAt(0).toUpperCase() + this.surname.substring(1) ;
+        return  this.surname.charAt(0).toUpperCase() + this.surname.substring(1);
     }
   },
   methods: {
