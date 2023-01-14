@@ -1,5 +1,5 @@
 <template>
-  <TheNavigation v-bind:user-logged="this.showAccount"></TheNavigation>
+  <TheNavigation v-bind:user-logged="this.userLogged"></TheNavigation>
 
   <div class="container">
     <routerView @message="handleMessage"></routerView>

@@ -18,6 +18,14 @@
       <span v-if="!userLogged">
         <router-link to="/login">Login</router-link>
       </span>
+
+      <span v-if="userLogged">
+        <router-link to="/feed">Feed</router-link>
+      </span>
+
+      <span v-if="userLogged">
+        <router-link to="/account">Account</router-link>
+      </span>
     </div>
   </div>
 </template>
