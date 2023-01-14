@@ -14,7 +14,7 @@ async function whoami(){
     });
 
     const objUser = await resultJSON.json();
-    return {id: objUser.id, username: objUser.username, email: objUser.email};
+    return objUser;
 };
 
 

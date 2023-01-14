@@ -82,6 +82,11 @@ export default {
   },
   methods: {
     async signup() {
+      // check the user input
+      if(this.checkInputData()){
+        return;
+      }
+
       const postRequest = await fetch(config.hostname + "/api/auth/signup", {
         method: "POST",
         headers: { "Content-type": "application/json" },
@@ -107,6 +112,33 @@ export default {
           params: { message: obj.message },
         });
       }
+    },
+    checkInputData() {
+      let error = false;
+
+      // check that each field has at least one char
+      if (
+        this.email.length < 1 ||
+        this.password.length < 1 ||
+        this.username.length < 1 ||
+        this.name.length < 1 ||
+        this.surname.length < 1
+      ) {
+        window.alert("Please enter all the fields in the form");
+        return true;
+      }
+
+      if(this.name.length <= 1){
+        window.alert("Name too short, at least two chars");
+        return true;
+      }
+
+      if(this.surname.length <= 1){
+        window.alert("Surname too short, at least two chars");
+        return true;
+      }
+
+      return error;
     },
   },
 };
