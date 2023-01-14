@@ -70,6 +70,32 @@ export default {
       );
 
       //const obj = await postRequest.json();
+    },
+    async removeLike() {
+      // update frontend
+      this.$emit("like", { contentId: this.contentObj.id, action: "remove" });
+      this.likeStyle = "fa-regular";
+      this.liked = false;
+
+      // I'm going to update the backend now
+
+      // require jwt token
+      var jwt = cookieManager.getCookie("jwt");
+      // Set the Authorization header of the request
+      var headers = new Headers();
+      headers.append("Authorization", "Bearer " + jwt);
+      headers.append("Content-type", "application/json");
+
+      const postRequest = await fetch(
+        config.hostname + "/api/social/like/" + this.contentObj.id,
+        {
+          method: "DELETE",
+          headers,
+          body: JSON.stringify({}),
+        }
+      );
+
+      //const obj = await postRequest.json();
     }
   }
 };
