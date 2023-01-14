@@ -40,12 +40,11 @@ export default {
     return {
       email: "",
       password: "",
-      hostname: config.hostname,
     };
   },
   methods: {
     async login() {
-      const token = await fetch(this.hostname + "/api/auth/signin", {
+      const token = await fetch(config.hostname + "/api/auth/signin", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ email: this.email, password: this.password }),

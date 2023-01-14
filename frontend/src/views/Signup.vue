@@ -78,12 +78,11 @@ export default {
       name: "",
       surname: "",
       bio: "Hi! I'm on Express",
-      hostname: config.hostname,
     };
   },
   methods: {
     async signup() {
-      const postRequest = await fetch(this.hostname + "/api/auth/signup", {
+      const postRequest = await fetch(config.hostname + "/api/auth/signup", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({
