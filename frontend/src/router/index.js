@@ -24,6 +24,11 @@ const routes = [
     name: "Account",
     component: () => import("@/views/Account.vue"),
   },
+  {
+    path: "/error/:message",
+    name: "Error",
+    component: () => import("@/views/Error.vue"),
+  },
 ];
 
 

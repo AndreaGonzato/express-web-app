@@ -97,10 +97,16 @@ export default {
       });
 
       const obj = await postRequest.json();
-      if(obj.insertedId !== undefined){
+      if (obj.insertedId !== undefined) {
         // OK, user inserted in the DB
-      }else{
+        // go the the Login page
+        this.$router.push({ name: "Login" });
+      } else {
         // user not inserted
+        this.$router.push({
+          name: "Error",
+          params: { message: obj.message },
+        });
       }
     },
   },

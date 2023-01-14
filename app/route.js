@@ -38,15 +38,13 @@ function authenticateToken(req, res, next) {
 
 const router = express.Router();
 
-
 // TODO can i restrict and make more secure my access policy?
 //this permit to get a fetch from all the domain and port
 router.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', '*');
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
   next();
-})
-
+});
 
 // TODO GENERAL check that it dos not inject code in the api (attention to all the POST requests)
 
@@ -76,15 +74,43 @@ router.post("/auth/signup", async (req, res) => {
   const nextUserID = await dbManager.getNextId(dbCollections.USERS);
   user.id = nextUserID;
 
-  if (user.username === undefined || user.email === undefined || user.password === undefined || user.name === undefined || user.surname === undefined || user.bio === undefined) {
-    return res.status(500).send({message : "you need to specify all the fields of a user: (username, email, password, name, surname, bio)"});
+  if (
+    user.username === undefined ||
+    user.email === undefined ||
+    user.password === undefined ||
+    user.name === undefined ||
+    user.surname === undefined ||
+    user.bio === undefined ||
+    user.username === "" ||
+    user.email === "" ||
+    user.password === "" ||
+    user.name === "" ||
+    user.surname === "" ||
+    user.bio === ""
+  ) {
+    return res
+      .status(500)
+      .send({
+        message:
+          "You need to specify all the fields of a user: (username, email, password, name, surname, bio)",
+      });
   }
 
   // check that the username is unique
-  const userWithSameUsername = await mongo.collection(dbCollections.USERS).findOne({username: user.username});
-  if(userWithSameUsername){
-    // it already exist an user with that username 
-    return res.status(500).send({message: "an user with username: "+userWithSameUsername.username +" already exist"});
+  const userWithSameUsername = await mongo
+    .collection(dbCollections.USERS)
+    .findOne({ username: user.username });
+
+  if (userWithSameUsername) {
+    // it already exist an user with that username
+    return res
+      .status(500)
+      .send({
+        message:
+          "The username: " +
+          userWithSameUsername.username +
+          " already exist, choose another one!",
+      });
   }
 
   const result = await mongo.collection(dbCollections.USERS).insertOne(user);
@@ -96,7 +122,7 @@ router.post("/auth/signup", async (req, res) => {
 // when a user sign in I give him a JWT token
 // e.g of an input: {"email" : "myEmail@gmail.com", "password" : "myPassword"}
 router.post("/auth/signin", async (req, res) => {
-  res.setHeader('Access-Control-Allow-Credentials', 'true')
+  res.setHeader("Access-Control-Allow-Credentials", "true");
 
   const mongo = db.getDb();
 
@@ -109,7 +135,7 @@ router.post("/auth/signin", async (req, res) => {
     res.status(400).send({ message: "User not found" });
   } else {
     const token = generateToken({ id: user.id });
-    res.send({token});
+    res.send({ token });
   }
 });
 
