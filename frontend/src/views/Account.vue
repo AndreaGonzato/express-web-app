@@ -18,6 +18,9 @@
 </template>
 
 <script>
+import userManager from "@/userManager.js";
+import cookieManager from "@/cookieManager.js";
+
 export default {
   name: "Account",
   data() {
@@ -25,6 +28,18 @@ export default {
       username: "",
       email: "",
     };
+  },
+  async mounted() {
+    const user = await userManager.whoami();
+    this.username = user.username;
+    this.email = user.email;
+  },
+  methods: {
+    logout() {
+      this.$emit("message", { userLogged: false });
+      cookieManager.removeJwtCookie();
+      this.$router.push({ name: "Home" });
+    },
   },
 };
 </script>
@@ -35,9 +50,10 @@ export default {
 }
 
 .info{
-    max-width: 400px;
+    max-width: 800px;
     margin-top: 5em;
     margin-bottom: 5em;
+    display: grid;
 }
 .data-type{
     text-align: right;
