@@ -6,11 +6,14 @@
       welcome back {{ this.userObj.username }}!
     </div>
 
+    <hr/>
+
     <div v-for="content in contents">
       <div class="content">
         <TheTweet
           v-bind:content-obj="content"
           v-bind:likes-number="content.likes ? content.likes.length : 0"
+          @like="handleLike"
         ></TheTweet>
 
         <hr />
@@ -63,6 +66,31 @@ export default {
       const contents = await resultJSON.json();
       this.contents = contents.messages;
     },
+    handleLike(message) {
+      const content = this.contents.find((el) => el.id === message.contentId);
+      const action = message.action;
+
+      const userID = this.userObj.id;
+
+      if (action === "remove") {
+        // remove a like
+        for (let i = 0; i < content.likes.length; i++) {
+          if (content.likes[i] === userID) {
+            content.likes.splice(i, 1);
+            break;
+          }
+        }
+      }
+
+      if (action === "add") {
+        // add a like
+        if (content.likes === undefined) {
+          content.likes = [userID];
+        } else {
+          content.likes.push(userID);
+        }
+      }
+    }
   },
 };
 </script>
@@ -71,6 +99,8 @@ export default {
 hr {
   max-width: 400px;
   margin: auto;
+  margin-bottom: 1em;
+  margin-top: 1em;
 }
 .all {
   text-align: center;

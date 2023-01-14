@@ -335,7 +335,7 @@ router.post("/social/like/:idMessage", authenticateToken, async (req, res) => {
   }
 
   let list = message.likes;
-  if (list.includes(userID)) {
+  if (list !== undefined && list.includes(userID)) {
     // the user with userID has already put a like to this message previously
     return res.send({
       message: "you already put a like to this message previously",
