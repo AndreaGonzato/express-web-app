@@ -406,4 +406,13 @@ router.get("/social/whoami", authenticateToken, async (req, res) => {
   res.json(user);
 });
 
+// API 15 : OK
+// show info of user with this given username
+router.get("/users/:username", async (req, res) => {
+  const mongo = db.getDb();
+  const username = req.params.username;
+  let user = await mongo.collection(dbCollections.USERS).findOne({ username: username });
+  res.json(user);
+});
+
 module.exports = router;
