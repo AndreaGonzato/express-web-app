@@ -4,12 +4,24 @@
 
     <UserInfo v-if="loadedUser" v-bind:userObj="this.user"></UserInfo>
 
+    <div v-for="tweet in tweets">
+      <div class="tweet">
+        <TheTweet
+          v-bind:content-obj="tweet"
+          v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
+          @like="handleLike"
+        ></TheTweet>
+
+        <hr/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import config from "@/config.js";
 import UserInfo from "../components/UserInfo.vue";
+import TheTweet from "../components/TheTweet.vue";
 
 export default {
   name: "Account",
@@ -17,17 +29,26 @@ export default {
     return {
       username: "",
       user: Object,
+      tweets: [{}],
       loadedUser: false,
+      loadedMessages: false,
     };
   },
   components: {
     UserInfo,
+    TheTweet,
   },
   async created() {
+    // tell the app to show account in the nav menu and remove login and signin
+    this.$emit("message", { userLogged: true });
+
     this.username = this.$route.params.id;
 
     await this.fetchUserInfo();
     this.loadedUser = true;
+
+    await this.fetchMessages();
+    this.loadedMessages = true;
   },
   methods: {
     async fetchUserInfo() {
@@ -40,6 +61,19 @@ export default {
       );
       this.user = await resultJSON.json();
     },
+    async fetchMessages() {
+      const resultJSON = await fetch(
+        config.hostname + `/api/social/messages/${this.user.id}`,
+        {
+          method: "GET",
+          headers: { "Content-type": "application/json" },
+        }
+      );
+      this.tweets = await resultJSON.json();
+    },
+    handleLike(){
+        console.log("TO IMPLEMENT")
+    }
   },
 };
 </script>
@@ -49,4 +83,10 @@ export default {
   text-align: center;
 }
 
+hr {
+  max-width: 400px;
+  margin: auto;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
 </style>

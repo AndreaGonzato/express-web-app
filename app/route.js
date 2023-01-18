@@ -89,12 +89,10 @@ router.post("/auth/signup", async (req, res) => {
     user.surname === "" ||
     user.bio === ""
   ) {
-    return res
-      .status(500)
-      .send({
-        message:
-          "You need to specify all the fields of a user: (username, email, password, name, surname, bio)",
-      });
+    return res.status(500).send({
+      message:
+        "You need to specify all the fields of a user: (username, email, password, name, surname, bio)",
+    });
   }
 
   // check that the username is unique
@@ -104,14 +102,12 @@ router.post("/auth/signup", async (req, res) => {
 
   if (userWithSameUsername) {
     // it already exist an user with that username
-    return res
-      .status(500)
-      .send({
-        message:
-          "The username: " +
-          userWithSameUsername.username +
-          " already exist, choose another one!",
-      });
+    return res.status(500).send({
+      message:
+        "The username: " +
+        userWithSameUsername.username +
+        " already exist, choose another one!",
+    });
   }
 
   const result = await mongo.collection(dbCollections.USERS).insertOne(user);
@@ -158,6 +154,14 @@ router.get("/social/messages/:userId", async (req, res) => {
     .collection(dbCollections.TWEETS)
     .find({ author: user_id })
     .toArray();
+
+  const user = await mongo
+    .collection(dbCollections.USERS)
+    .findOne({ id: user_id });
+
+  tweets = sortMessages(tweets);
+  tweets.forEach((tweet) => (tweet.author_username = user.username));
+
   res.json(tweets);
 });
 
@@ -285,20 +289,21 @@ router.get("/social/feed", authenticateToken, async (req, res) => {
     .findOne({ id: userId });
 
   let following = user.following;
-  if(following === undefined){
+  if (following === undefined) {
     following = [];
   }
   let output = { messages: [] };
 
   for (let i = 0; i < following.length; i++) {
-    const userI = await mongo.collection(dbCollections.USERS).findOne({id: following[i]});
+    const userI = await mongo
+      .collection(dbCollections.USERS)
+      .findOne({ id: following[i] });
 
     const messagesOfFollowingUserI = await mongo
       .collection(dbCollections.TWEETS)
       .find({ author: following[i] })
       .toArray();
-    
-    
+
     messagesOfFollowingUserI.forEach((message) => {
       message.author_username = userI.username;
       output.messages.push(message);
@@ -411,8 +416,21 @@ router.get("/social/whoami", authenticateToken, async (req, res) => {
 router.get("/users/:username", async (req, res) => {
   const mongo = db.getDb();
   const username = req.params.username;
-  let user = await mongo.collection(dbCollections.USERS).findOne({ username: username });
+  let user = await mongo
+    .collection(dbCollections.USERS)
+    .findOne({ username: username });
   res.json(user);
 });
+
+function sortMessages(messages) {
+  // sort by the field created_at
+  messages.sort(function (a, b) {
+    let dateA = new Date(a.created_at);
+    let dateB = new Date(b.created_at);
+    return dateB - dateA;
+  });
+
+  return messages;
+}
 
 module.exports = router;
