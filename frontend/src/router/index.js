@@ -20,7 +20,12 @@ const routes = [
     component: () => import("@/views/Feed.vue"),
   },
   {
-    path: "/account",
+    path: "/account/me",
+    name: "MyAccount",
+    component: () => import("@/views/MyAccount.vue"),
+  },
+  {
+    path: "/account/:id",
     name: "Account",
     component: () => import("@/views/Account.vue"),
   },

@@ -24,7 +24,7 @@
       </span>
 
       <span v-if="userLogged">
-        <router-link to="/account">Account</router-link>
+        <router-link to="/account/me">Account</router-link>
       </span>
     </div>
   </div>

@@ -1,6 +1,7 @@
 <template>
   <div class="all">
-    <p>@{{ contentObj.author_username }}</p>
+    <router-link  v-bind:to="`/account/`+this.contentObj.author_username"   ><p>@{{ contentObj.author_username }}</p></router-link>
+    
     <p>{{ contentObj.text }}</p>
 
     <!-- like button-->
