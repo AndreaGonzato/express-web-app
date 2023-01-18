@@ -1,7 +1,13 @@
 <template>
   <div class="all">
-    <router-link  v-bind:to="`/account/`+this.contentObj.author_username"   ><p>@{{ contentObj.author_username }}</p></router-link>
-    
+    <div>
+      <router-link v-bind:to="`/account/` + this.contentObj.author_username"
+        >@{{ contentObj.author_username }}</router-link
+      >
+
+      {{ getDate }}
+    </div>
+
     <p>{{ contentObj.text }}</p>
 
     <!-- like button-->
@@ -40,6 +46,20 @@ export default {
       this.likeStyle = "fa-solid";
       this.liked = true;
     }
+  },
+  computed: {
+    getDate() {
+      let fullDate = this.contentObj.created_at;
+      if (fullDate !== undefined) {
+        let date = fullDate.substring(0, 10);
+
+        let time = fullDate.match(/T(.*)Z/)[1];
+        time = time.substring(0, time.length - 7);
+
+        return date + " " + time;
+      }
+      return "time";
+    },
   },
   methods: {
     clickOnLike() {
