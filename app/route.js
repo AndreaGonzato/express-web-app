@@ -284,7 +284,10 @@ router.get("/social/feed", authenticateToken, async (req, res) => {
     .collection(dbCollections.USERS)
     .findOne({ id: userId });
 
-  const following = user.following;
+  let following = user.following;
+  if(following === undefined){
+    following = [];
+  }
   let output = { messages: [] };
 
   for (let i = 0; i < following.length; i++) {

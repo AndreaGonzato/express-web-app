@@ -44,10 +44,10 @@ export default {
       bio: "",
     };
   },
-  created(){
+  async created() {
+    // tell the app to show account in the nav menu and remove login and signin
     this.$emit("message", { userLogged: true });
-  },
-  async mounted() {
+    
     const user = await userManager.whoami();
     this.name = user.name;
     this.surname = user.surname;
