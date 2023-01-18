@@ -2,6 +2,9 @@
   <div class="all">
     <h1>Account</h1>
 
+
+    <UserInfo v-if="loadedUser" v-bind:userObj="this.user"></UserInfo>
+
     <div class="container text-center info">
       <div class="row align-items-start">
         <div class="col data-type">Name:</div>
@@ -32,6 +35,7 @@
 <script>
 import userManager from "@/userManager.js";
 import cookieManager from "@/cookieManager.js";
+import UserInfo from "../components/UserInfo.vue";
 
 export default {
   name: "MyAccount",
@@ -43,6 +47,9 @@ export default {
       email: "",
       bio: "",
     };
+  },
+  components: {
+    UserInfo
   },
   async created() {
     // tell the app to show account in the nav menu and remove login and signin
