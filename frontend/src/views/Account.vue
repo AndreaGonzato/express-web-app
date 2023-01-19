@@ -10,6 +10,7 @@
           v-bind:content-obj="tweet"
           v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
           v-bind:show-like="this.userLogged.name === undefined ? false : true"
+          v-bind:user-id="userLogged.id"
           @like="handleLike"
         ></TheTweet>
 
@@ -81,9 +82,31 @@ export default {
       );
       this.tweets = await resultJSON.json();
     },
-    handleLike() {
-      console.log("TO IMPLEMENT");
-    },
+    handleLike(message) {
+      const content = this.tweets.find((el) => el.id === message.contentId);
+      const action = message.action;
+
+      const userID = this.userLogged.id;
+
+      if (action === "remove") {
+        // remove a like
+        for (let i = 0; i < content.likes.length; i++) {
+          if (content.likes[i] === userID) {
+            content.likes.splice(i, 1);
+            break;
+          }
+        }
+      }
+
+      if (action === "add") {
+        // add a like
+        if (content.likes === undefined) {
+          content.likes = [userID];
+        } else {
+          content.likes.push(userID);
+        }
+      }
+    }
   },
 };
 </script>
