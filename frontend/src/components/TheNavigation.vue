@@ -12,23 +12,23 @@
 
     <div class="nav">
       <span>
-        <router-link to="/">Home</router-link>
+        <router-link to="/" @click.prevent="removeSearchText">Home</router-link>
       </span>
 
       <span v-if="!userLogged">
-        <router-link to="/signup">Signup</router-link>
+        <router-link to="/signup" @click.prevent="removeSearchText">Signup</router-link>
       </span>
 
       <span v-if="!userLogged">
-        <router-link to="/login">Login</router-link>
+        <router-link to="/login" @click.prevent="removeSearchText">Login</router-link>
       </span>
 
       <span v-if="userLogged">
-        <router-link to="/feed">Feed</router-link>
+        <router-link to="/feed" @click.prevent="removeSearchText">Feed</router-link>
       </span>
 
       <span v-if="userLogged">
-        <router-link to="/account/me">Account</router-link>
+        <router-link to="/account/me" @click.prevent="removeSearchText">Account</router-link>
       </span>
     </div>
   </div>
@@ -47,10 +47,16 @@ export default {
   },
   methods: {
     handleSearch(){
+      if(this.searchText.length <= 0){
+        return
+      }
       this.$router.push({
           name: "Search",
           params: { query: this.searchText },
         });
+    },
+    removeSearchText(){
+      this.searchText = '';
     }
   }
 };

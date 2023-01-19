@@ -1,6 +1,7 @@
 <template>
   <div class="all">
-    <h1>Result</h1>
+    <h1>Users found</h1>
+    <p>List of users that contains: {{ query }}</p>
 
     <div v-if="this.loadedUsersList">
       <div v-for="user in this.usersList">
@@ -39,8 +40,6 @@ export default {
       await this.searchQuery();
       console.log("watch")
     },
-
-
   },
   methods: {
     async searchQuery() {
@@ -60,6 +59,10 @@ export default {
 </script>
 
 <style scoped>
+h1{
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
 .all {
   text-align: center;
 }
