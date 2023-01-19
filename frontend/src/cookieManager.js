@@ -28,12 +28,12 @@ function setJwtCookie(token) {
 
 function removeJwtCookie() {
   var expires = new Date();
-  // Set the expiration date to 1 min from now
-  expires.setTime(expires.getTime() + 1 * 60 * 1000);
+  // Set the expiration date very shot
+  expires.setTime(expires.getTime() +  100);
 
   // Set a wrong JWT token
   document.cookie =
-    "jwt=" + "wrongTokenSaving" + ";expires=" + expires.toUTCString();
+    "jwt=" + "SavingWrongToken" + ";expires=" + expires.toUTCString();
 }
 
 export default {

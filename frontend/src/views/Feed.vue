@@ -68,7 +68,7 @@ export default {
       // redirect to the error page
       this.$router.push({
           name: "Error",
-          params: { message: "authenticate" },
+          params: { message: "you need to authenticate" },
         });
     } else {
       // tell the app that the user is logged in
