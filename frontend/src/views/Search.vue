@@ -1,11 +1,15 @@
 <template>
   <div class="all">
-    <h1>Users found</h1>
-    <p>List of users that contains: {{ query }}</p>
+    <h1 v-if="!this.foundResult">No result</h1>
 
-    <div v-if="this.loadedUsersList">
-      <div v-for="user in this.usersList">
-        <UserSearchResult v-bind:user-obj="user"></UserSearchResult>
+    <div v-if="this.foundResult">
+      <h1>Users found</h1>
+      <p>List of users that contains: {{ query }}</p>
+
+      <div v-if="this.loadedUsersList">
+        <div v-for="user in this.usersList">
+          <UserSearchResult v-bind:user-obj="user"></UserSearchResult>
+        </div>
       </div>
     </div>
   </div>
@@ -25,6 +29,7 @@ export default {
       query: "",
       usersList: [],
       loadedUsersList: false,
+      foundResult: true,
     };
   },
   async created() {
@@ -32,13 +37,12 @@ export default {
     await this.searchQuery();
   },
   watch: {
-    async '$route' (to, from) {
+    async $route(to, from) {
       // Your logic here
       // You can access the new route parameters via "to"
       // You can access the previous route parameters via "from"
       this.query = this.$route.params.query;
       await this.searchQuery();
-      console.log("watch")
     },
   },
   methods: {
@@ -51,15 +55,20 @@ export default {
         }
       );
       this.usersList = await response.json();
-      this.loadedUsersList = true;
-      console.log("this.userList: ", this.usersList);
+      if (this.usersList.length === 0) {
+        this.foundResult = false;
+      } else {
+        this.foundResult = true;
+        this.loadedUsersList = true;
+        console.log("this.userList: ", this.usersList);
+      }
     },
   },
 };
 </script>
 
 <style scoped>
-h1{
+h1 {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
