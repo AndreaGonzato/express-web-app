@@ -57,6 +57,9 @@ export default {
 </script>
 
 <style scoped>
+textarea{
+    height: 170px
+}
 .all {
   max-width: 500px;
   margin: auto;
