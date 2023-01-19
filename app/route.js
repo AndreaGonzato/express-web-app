@@ -95,6 +95,13 @@ router.post("/auth/signup", async (req, res) => {
     });
   }
 
+  if(user.username === 'me'){
+    return res.status(500).send({
+      message:
+        "Invalid username",
+    });
+  }
+
   // check that the username is unique
   const userWithSameUsername = await mongo
     .collection(dbCollections.USERS)

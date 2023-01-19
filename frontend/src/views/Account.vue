@@ -9,7 +9,7 @@
         <TheTweet
           v-bind:content-obj="tweet"
           v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
-          v-bind:show-like="true"
+          v-bind:show-like="this.userLogged.name === undefined ? false : true"
           @like="handleLike"
         ></TheTweet>
 
@@ -31,7 +31,8 @@ export default {
     return {
       username: "",
       user: Object,
-      tweets: [{}],
+      userLogged : Object,
+      tweets: [],
       loadedUser: false,
       loadedMessages: false,
     };
@@ -41,8 +42,9 @@ export default {
     TheTweet,
   },
   async created() {
-    const userLogged = await userManager.whoami();
-    if (userLogged.name === undefined) {
+    this.userLogged = await userManager.whoami();
+
+    if (this.userLogged.name === undefined) {
       // tell the app that the user is not logged in
       this.$emit("message", { userLogged: false });
     } else {

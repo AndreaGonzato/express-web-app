@@ -59,12 +59,23 @@ export default {
     TheTweet,
   },
   async created() {
-    // tell the app to show account in the nav menu and remove login and signin
-    this.$emit("message", { userLogged: true });
-
     this.user = await userManager.whoami();
-    this.loadedUser = true;
-    this.loadYourMessages();
+
+    if (this.user.name === undefined) {
+      // tell the app that the user is not logged in
+      this.$emit("message", { userLogged: false });
+      this.$router.push({
+          name: "Error",
+          params: { message: "can not access this page" },
+        });
+    } else {
+      // tell the app that the user is logged in
+      this.$emit("message", { userLogged: true });
+      this.loadedUser = true;
+      this.loadYourMessages();
+    }
+
+
   },
   methods: {
     logout() {
