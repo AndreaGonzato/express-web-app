@@ -193,6 +193,7 @@ router.post("/social/messages", authenticateToken, async (req, res) => {
     id: nextTweetID,
     author: userID,
     text: messageText,
+    likes : [],
     created_at: new Date(),
   };
 

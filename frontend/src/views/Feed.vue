@@ -1,12 +1,23 @@
 <template>
-  <div class="all">
+  <div class="all" v-if="this.loadUserObj">
     <h1>Feed</h1>
 
-    <div v-if="this.loadUserObj" class="welcome">
+    <div class="welcome">
       welcome back {{ this.userObj.username }}!
     </div>
 
-    <hr/>
+    <button @click.prevent="createExpress" class="btn btn-primary">
+      Post an Express
+    </button>
+
+    <div v-if="wantToPostNewExpress">
+      <PostNewExpress
+      v-bind:user-obj="this.userObj"
+      ></PostNewExpress>
+    </div>
+
+
+    <hr />
 
     <div v-for="content in contents">
       <div class="content">
@@ -14,7 +25,7 @@
           v-bind:content-obj="content"
           v-bind:likes-number="content.likes ? content.likes.length : 0"
           v-bind:user-id="userObj.id"
-          v-bind:show-like=true
+          v-bind:show-like="true"
           @like="handleLike"
         ></TheTweet>
 
@@ -29,6 +40,7 @@ import userManager from "@/userManager.js";
 import cookieManager from "@/cookieManager.js";
 import config from "@/config.js";
 import TheTweet from "../components/TheTweet.vue";
+import PostNewExpress from "@/components/PostNewExpress.vue";
 
 export default {
   name: "Feed",
@@ -37,10 +49,12 @@ export default {
       contents: [{}],
       userObj: Object,
       loadUserObj: false,
+      wantToPostNewExpress :false
     };
   },
   components: {
     TheTweet,
+    PostNewExpress,
   },
   async created() {
     // tell the app to show account in the nav menu and remove login and signin
@@ -57,7 +71,7 @@ export default {
       var jwt = cookieManager.getCookie("jwt");
 
       // Set the Authorization header of the request
-      var headers = new Headers();
+      let headers = new Headers();
       headers.append("Authorization", "Bearer " + jwt);
       headers.append("Content-type", "application/json");
       const resultJSON = await fetch(config.hostname + "/api/social/feed", {
@@ -92,7 +106,10 @@ export default {
           content.likes.push(userID);
         }
       }
-    }
+    },
+    createExpress() {
+      this.wantToPostNewExpress = true
+    },
   },
 };
 </script>

@@ -4,7 +4,7 @@
 
     <div class="subMenu">
       <button @click.prevent="loadYourMessages" class="btn btn-secondary">
-        Your Express
+        Your Expresses
       </button>
       <button @click.prevent="loadSettings" class="btn btn-secondary">
         Settings
