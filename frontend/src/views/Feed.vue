@@ -2,20 +2,15 @@
   <div class="all" v-if="this.loadUserObj">
     <h1>Feed</h1>
 
-    <div class="welcome">
-      welcome back {{ this.userObj.username }}!
-    </div>
+    <div class="welcome">welcome back {{ this.userObj.username }}!</div>
 
-    <button @click.prevent="createExpress" class="btn btn-primary">
-      Post an Express
+    <button @click.prevent="toggleCreateExpress" class="btn" :class="this.buttonCreatePostStyle">
+      {{ btnCreatePostText }}
     </button>
 
     <div v-if="wantToPostNewExpress">
-      <PostNewExpress
-      v-bind:user-obj="this.userObj"
-      ></PostNewExpress>
+      <PostNewExpress></PostNewExpress>
     </div>
-
 
     <hr />
 
@@ -49,7 +44,9 @@ export default {
       contents: [{}],
       userObj: Object,
       loadUserObj: false,
-      wantToPostNewExpress :false
+      wantToPostNewExpress: false,
+      buttonCreatePostStyle: "btn-primary",
+      btnCreatePostText : 'Post an Express'
     };
   },
   components: {
@@ -107,8 +104,15 @@ export default {
         }
       }
     },
-    createExpress() {
-      this.wantToPostNewExpress = true
+    toggleCreateExpress() {
+      this.wantToPostNewExpress = !this.wantToPostNewExpress;
+      if (this.wantToPostNewExpress) {
+        this.buttonCreatePostStyle = "btn-danger";
+        this.btnCreatePostText = 'Close'
+      } else {
+        this.buttonCreatePostStyle = "btn-primary";
+        this.btnCreatePostText = 'Post an Express'
+      }
     },
   },
 };
