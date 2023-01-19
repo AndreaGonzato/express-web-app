@@ -12,11 +12,11 @@
       {{ btnCreatePostText }}
     </button>
 
-    <div v-if="wantToPostNewExpress">
+    <div v-if="wantToPostNewExpress" class="def-new-express">
       <PostNewExpress @posted="showGreatAddedNewExpress"></PostNewExpress>
     </div>
 
-    <p v-if="this.showGreat">Great You added a new Express!</p>
+    <p v-if="this.showGreat" id="p-great">Great You added a new Express!</p>
 
     <hr />
 
@@ -123,6 +123,7 @@ export default {
     },
     toggleCreateExpress() {
       this.wantToPostNewExpress = !this.wantToPostNewExpress;
+      this.showGreat = false;
       if (this.wantToPostNewExpress) {
         this.buttonCreatePostStyle = "btn-danger";
         this.btnCreatePostText = "Close";
@@ -132,14 +133,15 @@ export default {
       }
     },
     showGreatAddedNewExpress(){
-      this.showGreat = true;
       this.toggleCreateExpress();
+      this.showGreat = true;
     }
   },
 };
 </script>
 
 <style scoped>
+
 hr {
   max-width: 400px;
   margin: auto;
@@ -151,5 +153,13 @@ hr {
 }
 .welcome {
   margin-bottom: 2em;
+}
+
+.def-new-express{
+  margin-top: 1em;
+}
+
+#p-great{
+  margin-top: 1em;
 }
 </style>

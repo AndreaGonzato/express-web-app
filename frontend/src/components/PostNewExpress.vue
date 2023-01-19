@@ -1,14 +1,13 @@
 <template>
   <div class="all">
     <div class="mb-3" v-if="!this.posted">
-      <label for="exampleFormControlTextarea1" class="form-label">Text</label>
       <textarea
         class="form-control"
         id="exampleFormControlTextarea1"
         rows="3"
         v-model="this.text"
       ></textarea>
-      <button @click.prevent="postExpress" class="btn btn-primary">Post</button>
+      <button @click.prevent="postExpress" class="btn btn-primary post-btn">Post</button>
     </div>
 
 
@@ -68,5 +67,8 @@ textarea{
 .all {
   max-width: 500px;
   margin: auto;
+}
+.post-btn{
+  margin-top: 1em;
 }
 </style>
