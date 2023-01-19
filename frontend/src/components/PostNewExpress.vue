@@ -1,6 +1,6 @@
 <template>
   <div class="all">
-    <div class="mb-3">
+    <div class="mb-3" v-if="!this.posted">
       <label for="exampleFormControlTextarea1" class="form-label">Text</label>
       <textarea
         class="form-control"
@@ -8,9 +8,11 @@
         rows="3"
         v-model="this.text"
       ></textarea>
+      <button @click.prevent="postExpress" class="btn btn-primary">Post</button>
     </div>
 
-    <button @click.prevent="postExpress" class="btn btn-primary">Post</button>
+
+    <p v-if="this.posted">You added a new Express!</p>
   </div>
 </template>
 
@@ -23,6 +25,7 @@ export default {
   data() {
     return {
       text: "",
+      posted : false
     };
   },
   methods: {
@@ -45,12 +48,14 @@ export default {
       });
 
       const result = await response.json();
-      if(result.created_at !== undefined){
-        // a successfully created a new post
-        
-      }
+      if(result.created_at === undefined){
+        // some error, the post is not stored
+      }else{
+        // post the message
+        this.posted = true;
+        this.$emit("posted", { posted: this.posted });
 
-      console.log(result);
+      }
     },
   },
 };

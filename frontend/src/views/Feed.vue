@@ -13,8 +13,10 @@
     </button>
 
     <div v-if="wantToPostNewExpress">
-      <PostNewExpress></PostNewExpress>
+      <PostNewExpress @posted="showGreatAddedNewExpress"></PostNewExpress>
     </div>
+
+    <p v-if="this.showGreat">Great You added a new Express!</p>
 
     <hr />
 
@@ -51,6 +53,7 @@ export default {
       wantToPostNewExpress: false,
       buttonCreatePostStyle: "btn-primary",
       btnCreatePostText: "Post an Express",
+      showGreat : false
     };
   },
   components: {
@@ -128,6 +131,10 @@ export default {
         this.btnCreatePostText = "Post an Express";
       }
     },
+    showGreatAddedNewExpress(){
+      this.showGreat = true;
+      this.toggleCreateExpress();
+    }
   },
 };
 </script>
