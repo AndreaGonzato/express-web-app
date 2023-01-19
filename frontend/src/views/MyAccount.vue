@@ -11,22 +11,27 @@
       </button>
     </div>
 
-    <div class="settings" v-if="this.showSettings">
-      <UserInfo v-if="loadedUser" v-bind:userObj="this.user"></UserInfo>
+    <div v-if="loadedUser">
+      <div class="settings" v-if="this.showSettings">
+        <UserInfo v-bind:userObj="this.user"></UserInfo>
 
-      <button @click.prevent="logout" class="btn btn-danger">Log out</button>
-    </div>
+        <button @click.prevent="logout" class="btn btn-danger">Log out</button>
+      </div>
 
+      <div
+        v-if="!this.showSettings"
+        v-for="tweet in tweets"
+        class="user-messages"
+      >
+        <div class="tweet">
+          <TheTweet
+            v-bind:content-obj="tweet"
+            v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
+            v-bind:show-like="false"
+          ></TheTweet>
 
-    <div v-if="loadedUser" v-for="tweet in tweets" class="user-messages">
-      <div class="tweet">
-        <TheTweet
-          v-bind:content-obj="tweet"
-          v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
-          v-bind:show-like=false
-        ></TheTweet>
-
-        <hr/>
+          <hr />
+        </div>
       </div>
     </div>
   </div>
@@ -37,7 +42,7 @@ import userManager from "@/userManager.js";
 import cookieManager from "@/cookieManager.js";
 import UserInfo from "../components/UserInfo.vue";
 import TheTweet from "../components/TheTweet.vue";
-import config from "@/config.js"
+import config from "@/config.js";
 
 export default {
   name: "MyAccount",
@@ -46,11 +51,12 @@ export default {
       user: Object,
       loadedUser: false,
       showSettings: false,
-      tweets : [{}]
+      tweets: [{}],
     };
   },
   components: {
-    UserInfo, TheTweet
+    UserInfo,
+    TheTweet,
   },
   async created() {
     // tell the app to show account in the nav menu and remove login and signin
@@ -82,7 +88,6 @@ export default {
         }
       );
       this.tweets = await resultJSON.json();
-      console.log(this.tweets)
     },
   },
 };
@@ -102,7 +107,7 @@ export default {
   margin-top: 2em;
 }
 
-.user-messages{
+.user-messages {
   margin-top: 2em;
 }
 </style>
