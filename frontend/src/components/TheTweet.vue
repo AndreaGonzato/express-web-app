@@ -4,8 +4,7 @@
       <router-link v-bind:to="`/account/` + this.contentObj.author_username"
         >@{{ contentObj.author_username }}</router-link
       >
-
-      {{ getDate }}
+      <span class="when">{{ getDate }}</span>
     </div>
 
     <p>{{ contentObj.text }}</p>
@@ -131,3 +130,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.when{
+  margin-left: 3em;
+  font-size: x-small;
+}
+</style>
