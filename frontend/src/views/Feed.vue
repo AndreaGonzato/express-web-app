@@ -4,7 +4,11 @@
 
     <div class="welcome">welcome back {{ this.userObj.username }}!</div>
 
-    <button @click.prevent="toggleCreateExpress" class="btn" :class="this.buttonCreatePostStyle">
+    <button
+      @click.prevent="toggleCreateExpress"
+      class="btn"
+      :class="this.buttonCreatePostStyle"
+    >
       {{ btnCreatePostText }}
     </button>
 
@@ -41,12 +45,12 @@ export default {
   name: "Feed",
   data() {
     return {
-      contents: [{}],
+      contents: [],
       userObj: Object,
       loadUserObj: false,
       wantToPostNewExpress: false,
       buttonCreatePostStyle: "btn-primary",
-      btnCreatePostText : 'Post an Express'
+      btnCreatePostText: "Post an Express",
     };
   },
   components: {
@@ -54,10 +58,20 @@ export default {
     PostNewExpress,
   },
   async created() {
-    // tell the app to show account in the nav menu and remove login and signin
-    this.$emit("message", { userLogged: true });
-
     const user = await userManager.whoami();
+    if (user.name === undefined) {
+      // tell the app that the user is not logged in
+      this.$emit("message", { userLogged: false });
+      // redirect to the error page
+      this.$router.push({
+          name: "Error",
+          params: { message: "authenticate" },
+        });
+    } else {
+      // tell the app that the user is logged in
+      this.$emit("message", { userLogged: true });
+    }
+
     this.userObj = user;
     this.loadUserObj = true;
 
@@ -108,10 +122,10 @@ export default {
       this.wantToPostNewExpress = !this.wantToPostNewExpress;
       if (this.wantToPostNewExpress) {
         this.buttonCreatePostStyle = "btn-danger";
-        this.btnCreatePostText = 'Close'
+        this.btnCreatePostText = "Close";
       } else {
         this.buttonCreatePostStyle = "btn-primary";
-        this.btnCreatePostText = 'Post an Express'
+        this.btnCreatePostText = "Post an Express";
       }
     },
   },
