@@ -9,6 +9,7 @@
         <TheTweet
           v-bind:content-obj="tweet"
           v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
+          v-bind:show-like=true
           @like="handleLike"
         ></TheTweet>
 

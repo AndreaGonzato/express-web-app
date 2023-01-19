@@ -10,7 +10,7 @@
     <p>{{ contentObj.text }}</p>
 
     <!-- like button-->
-    <span class="like">
+    <span class="like" v-if="showLike">
       <button class="btn btn-success" @click.prevent="clickOnLike">
         <i class="fa-thumbs-up" :class="likeStyle"></i> Like
         {{ this.likesNumber }}
@@ -29,6 +29,7 @@ export default {
     contentObj: Object,
     likesNumber: Number,
     userId: Number,
+    showLike : Boolean
   },
   data() {
     return {

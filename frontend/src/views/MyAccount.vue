@@ -18,11 +18,12 @@
     </div>
 
 
-    <div v-if="loadedUser" v-for="tweet in tweets">
+    <div v-if="loadedUser" v-for="tweet in tweets" class="user-messages">
       <div class="tweet">
         <TheTweet
           v-bind:content-obj="tweet"
           v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
+          v-bind:show-like=false
         ></TheTweet>
 
         <hr/>
@@ -98,6 +99,10 @@ export default {
   max-width: 400px;
   margin: auto;
   grid-gap: 3em;
+  margin-top: 2em;
+}
+
+.user-messages{
   margin-top: 2em;
 }
 </style>
