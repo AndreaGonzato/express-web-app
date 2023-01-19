@@ -3,10 +3,7 @@
     <h1>Result</h1>
 
     <div v-if="this.loadedUsersList">
-      delete this
-
       <div v-for="user in this.usersList">
-        {{user.name}}
         <UserSearchResult v-bind:user-obj="user"></UserSearchResult>
       </div>
     </div>

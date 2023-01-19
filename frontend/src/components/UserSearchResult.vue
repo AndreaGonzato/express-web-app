@@ -1,6 +1,6 @@
 <template>
     <div class="all">
-        ciao
+        {{this.userObj.name}}
     </div>
 </template>
 
