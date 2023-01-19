@@ -11,9 +11,8 @@ function getCookie(name) {
     }
   }
 
-  console.log("no cookie for this site");
-  // If the named cookie does not exist, return null
-  return null;
+  // return an error if no cookie found
+  return {message: "no cookie for this site", error : true};
 }
 
 function setJwtCookie(token) {

@@ -9,11 +9,11 @@
         <TheTweet
           v-bind:content-obj="tweet"
           v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
-          v-bind:show-like=true
+          v-bind:show-like="true"
           @like="handleLike"
         ></TheTweet>
 
-        <hr/>
+        <hr />
       </div>
     </div>
   </div>
@@ -23,6 +23,7 @@
 import config from "@/config.js";
 import UserInfo from "../components/UserInfo.vue";
 import TheTweet from "../components/TheTweet.vue";
+import userManager from "@/userManager.js";
 
 export default {
   name: "Account",
@@ -40,8 +41,14 @@ export default {
     TheTweet,
   },
   async created() {
-    // tell the app to show account in the nav menu and remove login and signin
-    this.$emit("message", { userLogged: true });
+    const userLogged = await userManager.whoami();
+    if (userLogged.name === undefined) {
+      // tell the app that the user is not logged in
+      this.$emit("message", { userLogged: false });
+    } else {
+      // tell the app that the user is logged in
+      this.$emit("message", { userLogged: true });
+    }
 
     this.username = this.$route.params.id;
 
@@ -72,9 +79,9 @@ export default {
       );
       this.tweets = await resultJSON.json();
     },
-    handleLike(){
-        console.log("TO IMPLEMENT")
-    }
+    handleLike() {
+      console.log("TO IMPLEMENT");
+    },
   },
 };
 </script>

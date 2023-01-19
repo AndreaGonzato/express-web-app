@@ -1,9 +1,10 @@
 import cookieManager from "@/cookieManager.js";
 import config from "@/config.js";
 
-async function whoami(){
-    var jwt = cookieManager.getCookie("jwt");
+async function whoami() {
+  var jwt = cookieManager.getCookie("jwt");
 
+  if (jwt.error === undefined) {
     // Set the Authorization header of the request
     var headers = new Headers();
     headers.append("Authorization", "Bearer " + jwt);
@@ -15,9 +16,12 @@ async function whoami(){
 
     const objUser = await resultJSON.json();
     return objUser;
-};
-
+  } else {
+    // no cookie
+    return { error: true, message: "no cookie found" };
+  }
+}
 
 export default {
-    whoami,
-}
+  whoami,
+};
