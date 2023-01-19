@@ -1,6 +1,6 @@
 <template>
     <div class="all">
-        {{this.userObj.name}}
+        {{this.userObj.username}}
     </div>
 </template>
 

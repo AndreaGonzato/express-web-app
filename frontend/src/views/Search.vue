@@ -22,13 +22,25 @@ export default {
   data() {
     return {
       query: "",
-      users: [],
+      usersList: [],
       loadedUsersList: false,
     };
   },
   async created() {
     this.query = this.$route.params.query;
     await this.searchQuery();
+  },
+  watch: {
+    async '$route' (to, from) {
+      // Your logic here
+      // You can access the new route parameters via "to"
+      // You can access the previous route parameters via "from"
+      this.query = this.$route.params.query;
+      await this.searchQuery();
+      console.log("watch")
+    },
+
+
   },
   methods: {
     async searchQuery() {
