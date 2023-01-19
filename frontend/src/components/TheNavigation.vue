@@ -6,6 +6,10 @@
       /></router-link>
     </div>
 
+    <div class="search">
+      <input type="text" placeholder="username" class="form-control"  @keyup.enter="handleSearch"  v-model="searchText"/>
+    </div>
+
     <div class="nav">
       <span>
         <router-link to="/">Home</router-link>
@@ -33,13 +37,33 @@
 <script>
 export default {
   name: "TheNavigation",
-  props : {
-    userLogged : Boolean
+  props: {
+    userLogged: Boolean,
   },
+  data(){
+    return {
+      searchText : ''
+    }
+  },
+  methods: {
+    handleSearch(){
+      this.$router.push({
+          name: "Search",
+          params: { query: this.searchText },
+        });
+    }
+  }
 };
 </script>
 
 <style scoped>
+input{
+  background-color: white;
+  margin: auto;
+  margin-top: 0.3em;
+  max-width: 250px;
+}
+
 img {
   height: 50px;
   width: 50px;
@@ -52,12 +76,17 @@ span {
 
 .logo {
   text-align: center;
+  margin-left: 200px;
+}
+
+.search{
+  text-align: center;
 }
 
 .wrapper {
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1.5fr;
   color: black;
 }
 

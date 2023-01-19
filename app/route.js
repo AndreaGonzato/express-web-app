@@ -95,10 +95,9 @@ router.post("/auth/signup", async (req, res) => {
     });
   }
 
-  if(user.username === 'me'){
+  if (user.username === "me") {
     return res.status(500).send({
-      message:
-        "Invalid username",
+      message: "Invalid username",
     });
   }
 
@@ -200,7 +199,7 @@ router.post("/social/messages", authenticateToken, async (req, res) => {
     id: nextTweetID,
     author: userID,
     text: messageText,
-    likes : [],
+    likes: [],
     created_at: new Date(),
   };
 
@@ -390,16 +389,17 @@ router.delete(
 
 // API 13 : OK
 // find the user that match the query string
-// Remember that JSON format use double quotes for the attribute definition. e.g. of an http req: /api/social/search?q={"id" : 1}
+// Remember that JSON format use double quotes for the attribute definition. e.g. of an http req: /api/social/search?q=gonz
 // GET /api/social/search?q=query
 router.get("/social/search", async (req, res) => {
   const mongo = db.getDb();
   const queryString = req.query.q;
-  const queryObj = JSON.parse(queryString);
+
+  const regex = new RegExp(queryString, "i");
 
   const users = await mongo
     .collection(dbCollections.USERS)
-    .find(queryObj)
+    .find({ username: regex })
     .toArray();
 
   res.json(users);

@@ -34,6 +34,11 @@ const routes = [
     name: "Error",
     component: () => import("@/views/Error.vue"),
   },
+  {
+    path: "/search/:query",
+    name: "Search",
+    component: () => import("@/views/Search.vue"),
+  },
 ];
 
 
