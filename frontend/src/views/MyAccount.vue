@@ -27,7 +27,8 @@
           <TheTweet
             v-bind:content-obj="tweet"
             v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
-            v-bind:show-like="false"
+            v-bind:user-id="this.user.id"
+            v-bind:show-like="true"
           ></TheTweet>
 
           <hr />
