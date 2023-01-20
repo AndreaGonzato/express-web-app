@@ -12,8 +12,8 @@ dotenv.config();
 // access config var
 const JWT_SECRET = process.env.TOKEN_SECRET;
 
-function generateToken(tokenContent) {
-  return jwt.sign(tokenContent, JWT_SECRET, { expiresIn: "1d" });
+function generateToken(tokenContent, expiresTime) {
+  return jwt.sign(tokenContent, JWT_SECRET, { expiresIn: expiresTime });
 }
 
 function authenticateToken(req, res, next) {
@@ -137,7 +137,7 @@ router.post("/auth/signin", async (req, res) => {
     // User not found: (email + password) does not match
     res.status(400).send({ message: "User not found" });
   } else {
-    const token = generateToken({ id: user.id });
+    const token = generateToken({ id: user.id }, "1d");
     res.send({ token });
   }
 });
@@ -440,5 +440,14 @@ function sortMessages(messages) {
 
   return messages;
 }
+
+// API 16 : WORKING...
+// logout
+// send a JWT that have a very short will expire shortly (1 milliseconds)
+router.post("/auth/logout", async (req, res) => {
+  const token = generateToken({ id: "someID" }, "1ms");
+
+  return res.send({ token });
+});
 
 module.exports = router;

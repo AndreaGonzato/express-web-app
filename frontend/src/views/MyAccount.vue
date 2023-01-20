@@ -65,22 +65,31 @@ export default {
       // tell the app that the user is not logged in
       this.$emit("message", { userLogged: false });
       this.$router.push({
-          name: "Error",
-          params: { message: "can not access this page" },
-        });
+        name: "Error",
+        params: { message: "can not access this page" },
+      });
     } else {
       // tell the app that the user is logged in
       this.$emit("message", { userLogged: true });
       this.loadedUser = true;
       this.loadYourMessages();
     }
-
-
   },
   methods: {
-    logout() {
+    async logout() {
+      // update frontend
       this.$emit("message", { userLogged: false });
-      cookieManager.removeJwtCookie();
+
+      const response = await fetch(config.hostname + "/api/auth/logout", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({}),
+      });
+
+      const result = await response.json();
+      cookieManager.setJwtCookie(result.token);
+
+      // go the the Home page
       this.$router.push({ name: "Home" });
     },
     loadSettings() {
