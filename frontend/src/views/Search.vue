@@ -60,7 +60,6 @@ export default {
       } else {
         this.foundResult = true;
         this.loadedUsersList = true;
-        console.log("this.userList: ", this.usersList);
       }
     },
   },
