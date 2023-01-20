@@ -20,6 +20,8 @@
 
 <script>
 import userManager from "@/userManager.js";
+import config from "@/config.js";
+import cookieManager from "@/cookieManager.js";
 
 export default {
   name: "UserSearchResult",
@@ -48,10 +50,26 @@ export default {
       const user = await userManager.whoami();
       if (user.error === undefined) {
         // the user is authenticated
-        console.log("user is authenticated");
+        let jwt = cookieManager.getCookie("jwt");
+
+        // Set the Authorization header of the request
+        let headers = new Headers();
+        headers.append("Authorization", "Bearer " + jwt);
+        headers.append("Content-type", "application/json");
+
+        const response = await fetch(
+          config.hostname + "/api/social/followers/" + this.userObj.id,
+          {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({}),
+          }
+        );
+        //const result = await response.json();
+
       } else {
         // user is not authenticated
-        console.log("user is NOT authenticated");
+        this.$router.push({ name: "Login" });
       }
     },
   },

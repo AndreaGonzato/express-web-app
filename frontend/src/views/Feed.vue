@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     async fetchFeedContents() {
-      var jwt = cookieManager.getCookie("jwt");
+      let jwt = cookieManager.getCookie("jwt");
 
       // Set the Authorization header of the request
       let headers = new Headers();

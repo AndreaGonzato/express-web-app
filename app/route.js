@@ -26,8 +26,7 @@ function authenticateToken(req, res, next) {
 
   jwt.verify(token, JWT_SECRET, (err, authData) => {
     if (err) {
-      console.error(err);
-      return res.status(403).send({message : "token not valid", error : true});
+      return res.status(403).send({message : "token not valid", error : true, authenticated : false});
     }
 
     // save the user data in the req obj
