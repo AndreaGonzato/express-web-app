@@ -29,6 +29,7 @@
             v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
             v-bind:user-id="this.user.id"
             v-bind:show-like="true"
+            @like="handleLike"
           ></TheTweet>
 
           <hr />
@@ -52,7 +53,7 @@ export default {
       user: Object,
       loadedUser: false,
       showSettings: false,
-      tweets: [{}],
+      tweets: [],
     };
   },
   components: {
@@ -110,6 +111,31 @@ export default {
       );
       this.tweets = await resultJSON.json();
     },
+    handleLike(message) {
+      const content = this.tweets.find((el) => el.id === message.contentId);
+      const action = message.action;
+
+      const userID = this.user.id;
+
+      if (action === "remove") {
+        // remove a like
+        for (let i = 0; i < content.likes.length; i++) {
+          if (content.likes[i] === userID) {
+            content.likes.splice(i, 1);
+            break;
+          }
+        }
+      }
+
+      if (action === "add") {
+        // add a like
+        if (content.likes === undefined) {
+          content.likes = [userID];
+        } else {
+          content.likes.push(userID);
+        }
+      }
+    }
   },
 };
 </script>
