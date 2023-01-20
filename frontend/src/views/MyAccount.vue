@@ -141,9 +141,18 @@ export default {
 </script>
 
 <style scoped>
+
+hr {
+  max-width: 400px;
+  margin: auto;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
 .all {
   text-align: center;
 }
+
 
 .subMenu {
   display: grid;

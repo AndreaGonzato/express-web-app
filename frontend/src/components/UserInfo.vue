@@ -50,8 +50,8 @@ export default {
 <style scoped>
 .info {
   max-width: 500px;
-  margin-top: 5em;
-  margin-bottom: 5em;
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 .data-type {
   text-align: right;

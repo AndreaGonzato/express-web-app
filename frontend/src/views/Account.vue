@@ -2,6 +2,10 @@
   <div class="all">
     <h1>{{ this.username }}</h1>
 
+    <button v-if="userLogged.id !== undefined" @click.prevent="follow" class="btn btn-primary follow">
+      Follow
+    </button>
+
     <UserInfo v-if="loadedUser" v-bind:userObj="this.user"></UserInfo>
 
     <div v-for="tweet in tweets">
@@ -25,6 +29,7 @@ import config from "@/config.js";
 import UserInfo from "../components/UserInfo.vue";
 import TheTweet from "../components/TheTweet.vue";
 import userManager from "@/userManager.js";
+import cookieManager from "@/cookieManager.js"
 
 export default {
   name: "Account",
@@ -32,7 +37,7 @@ export default {
     return {
       username: "",
       user: Object,
-      userLogged : Object,
+      userLogged: Object,
       tweets: [],
       loadedUser: false,
       loadedMessages: false,
@@ -106,12 +111,44 @@ export default {
           content.likes.push(userID);
         }
       }
+    },
+    async follow(){
+      const user = await userManager.whoami();
+      if (user.error === undefined) {
+        // the user is authenticated
+        let jwt = cookieManager.getCookie("jwt");
+
+        // Set the Authorization header of the request
+        let headers = new Headers();
+        headers.append("Authorization", "Bearer " + jwt);
+        headers.append("Content-type", "application/json");
+
+        const response = await fetch(
+          config.hostname + "/api/social/followers/" + this.user.id,
+          {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({}),
+          }
+        );
+
+        const result = await response.json();
+        console.log(result);
+
+      } else {
+        // user is not authenticated
+        this.$router.push({ name: "Login" });
+      }
     }
   },
 };
 </script>
 
 <style scoped>
+h1 {
+  margin-top: 0.5em;
+}
+
 .all {
   text-align: center;
 }
@@ -121,5 +158,9 @@ hr {
   margin: auto;
   margin-bottom: 1em;
   margin-top: 1em;
+}
+
+.follow {
+  margin-top: 0.5em;
 }
 </style>
