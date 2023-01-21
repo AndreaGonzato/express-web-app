@@ -22,6 +22,7 @@
 <script>
 import config from "@/config.js";
 import cookieManager from "@/cookieManager.js";
+import userManager from "@/userManager.js"
 
 export default {
   name: "TheTweet",
@@ -62,7 +63,15 @@ export default {
     },
   },
   methods: {
-    clickOnLike() {
+    async clickOnLike() {
+      const loggedUser = await userManager.whoami();
+      if(loggedUser.name === undefined){
+        // user is not logged in
+        this.$router.push({ name: "Login" });
+        return;
+      }
+
+
       if (this.contentObj.likes === undefined) {
         // add the first like to this content
         this.contentObj.likes = [];
