@@ -4,8 +4,10 @@
 
     <button
       v-if="userLogged.id !== undefined"
-      @click.prevent="follow"
-      class="btn follow"  v-bind:class="this.followButtonStyle"  >
+      @click.prevent="followHandler"
+      class="btn follow"
+      v-bind:class="this.followButtonStyle"
+    >
       {{ this.followButtonText }}
     </button>
 
@@ -46,7 +48,7 @@ export default {
       loadedMessages: false,
       followButtonText: "Follow",
       following: false,
-      followButtonStyle : ''
+      followButtonStyle: "",
     };
   },
   components: {
@@ -74,12 +76,11 @@ export default {
       ) {
         // the logged user already follow him
         this.followButtonText = "Unfollow";
-        this.followButtonStyle = 'btn-dark'
+        this.followButtonStyle = "btn-dark";
       } else {
         this.followButtonText = "Follow";
 
-        this.followButtonStyle = 'btn-primary'
-        
+        this.followButtonStyle = "btn-primary";
       }
     }
 
@@ -132,19 +133,20 @@ export default {
         }
       }
     },
-    async follow() {
-      if (this.followButtonText === "Follow") {
-        // Follow the account
+    async followHandler() {
+      const user = await userManager.whoami();
+      if (user.error === undefined) {
+        // the user is authenticated
 
-        const user = await userManager.whoami();
-        if (user.error === undefined) {
-          // the user is authenticated
-          let jwt = cookieManager.getCookie("jwt");
+        let jwt = cookieManager.getCookie("jwt");
 
-          // Set the Authorization header of the request
-          let headers = new Headers();
-          headers.append("Authorization", "Bearer " + jwt);
-          headers.append("Content-type", "application/json");
+        // Set the Authorization header of the request
+        let headers = new Headers();
+        headers.append("Authorization", "Bearer " + jwt);
+        headers.append("Content-type", "application/json");
+
+        if (this.followButtonText === "Follow"){
+          // Follow the account
 
           const response = await fetch(
             config.hostname + "/api/social/followers/" + this.user.id,
@@ -154,26 +156,12 @@ export default {
               body: JSON.stringify({}),
             }
           );
-          
+
           // update frontend
-          this.followButtonText = 'Unfollow';
-          this.followButtonStyle = 'btn-dark';
-        } else {
-          // user is not authenticated
-          this.$router.push({ name: "Login" });
-        }
-      } else {
-        // UnFollow the account
-
-        const user = await userManager.whoami();
-        if (user.error === undefined) {
-          // the user is authenticated
-          let jwt = cookieManager.getCookie("jwt");
-
-          // Set the Authorization header of the request
-          let headers = new Headers();
-          headers.append("Authorization", "Bearer " + jwt);
-          headers.append("Content-type", "application/json");
+          this.followButtonText = "Unfollow";
+          this.followButtonStyle = "btn-dark";
+        }else{
+          // Unfollow the account
 
           const response = await fetch(
             config.hostname + "/api/social/followers/" + this.user.id,
@@ -184,12 +172,14 @@ export default {
             }
           );
 
-          this.followButtonText = 'Follow';
-          this.followButtonStyle = 'btn-primary';
-        } else {
-          // user is not authenticated
-          this.$router.push({ name: "Login" });
+          this.followButtonText = "Follow";
+          this.followButtonStyle = "btn-primary";
         }
+
+
+      } else {
+        // user is not authenticated, so go to the login page
+        this.$router.push({ name: "Login" });
       }
     },
   },
