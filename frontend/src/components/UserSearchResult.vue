@@ -9,8 +9,12 @@
         </div>
         <div class="col-sm">{{ this.fulName }}</div>
         <div class="col-sm">
-          <button @click.prevent="follow" class="btn btn-primary">
-            Follow
+          <button
+            @click.prevent="followHandler"
+            class="btn"
+            v-bind:class="this.followButtonStyle"
+          >
+            {{ followButtonText }}
           </button>
         </div>
       </div>
@@ -25,8 +29,33 @@ import cookieManager from "@/cookieManager.js";
 
 export default {
   name: "UserSearchResult",
+  data() {
+    return {
+      loggedUser: Object,
+      followButtonText: "Follow",
+      followButtonStyle: "btn-primary",
+    };
+  },
   props: {
     userObj: Object,
+  },
+  async created() {
+    this.loggedUser = await userManager.whoami();
+    if (this.loggedUser.error === undefined) {
+      // the user is authenticated
+
+      if (
+        this.loggedUser.following !== undefined &&
+        this.loggedUser.following.includes(parseInt(this.userObj.id))
+      ) {
+        // the logged user already follow this account
+        this.followButtonText = "Unfollow";
+        this.followButtonStyle = "btn-dark";
+      } else {
+        this.followButtonText = "Follow";
+        this.followButtonStyle = "btn-primary";
+      }
+    }
   },
   computed: {
     getName() {
@@ -46,10 +75,10 @@ export default {
     },
   },
   methods: {
-    async follow() {
-      const user = await userManager.whoami();
-      if (user.error === undefined) {
+    async followHandler() {
+      if (this.loggedUser.error === undefined) {
         // the user is authenticated
+
         let jwt = cookieManager.getCookie("jwt");
 
         // Set the Authorization header of the request
@@ -57,15 +86,33 @@ export default {
         headers.append("Authorization", "Bearer " + jwt);
         headers.append("Content-type", "application/json");
 
-        const response = await fetch(
-          config.hostname + "/api/social/followers/" + this.userObj.id,
-          {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify({}),
-          }
-        );
-        //const result = await response.json();
+        if (this.followButtonText === "Follow") {
+          // follow this account
+
+          const response = await fetch(
+            config.hostname + "/api/social/followers/" + this.userObj.id,
+            {
+              method: "POST",
+              headers: headers,
+              body: JSON.stringify({}),
+            }
+          );
+          this.followButtonText = "Unfollow";
+          this.followButtonStyle = "btn-dark";
+        } else {
+          // remove the follow from this account
+
+          const response = await fetch(
+            config.hostname + "/api/social/followers/" + this.userObj.id,
+            {
+              method: "DELETE",
+              headers: headers,
+              body: JSON.stringify({}),
+            }
+          );
+          this.followButtonText = "Follow";
+          this.followButtonStyle = "btn-primary";
+        }
 
       } else {
         // user is not authenticated
@@ -80,6 +127,7 @@ export default {
 button {
   margin-top: 0.2em;
   margin-bottom: 0.2em;
+  width: 100px;
 }
 .container {
   max-width: 500px;
