@@ -2,8 +2,11 @@
   <div class="all">
     <h1>{{ this.username }}</h1>
 
-    <button v-if="userLogged.id !== undefined" @click.prevent="follow" class="btn btn-primary follow">
-      Follow
+    <button
+      v-if="userLogged.id !== undefined"
+      @click.prevent="follow"
+      class="btn follow"  v-bind:class="this.followButtonStyle"  >
+      {{ this.followButtonText }}
     </button>
 
     <UserInfo v-if="loadedUser" v-bind:userObj="this.user"></UserInfo>
@@ -29,7 +32,7 @@ import config from "@/config.js";
 import UserInfo from "../components/UserInfo.vue";
 import TheTweet from "../components/TheTweet.vue";
 import userManager from "@/userManager.js";
-import cookieManager from "@/cookieManager.js"
+import cookieManager from "@/cookieManager.js";
 
 export default {
   name: "Account",
@@ -41,6 +44,9 @@ export default {
       tweets: [],
       loadedUser: false,
       loadedMessages: false,
+      followButtonText: "Follow",
+      following: false,
+      followButtonStyle : ''
     };
   },
   components: {
@@ -50,18 +56,32 @@ export default {
   async created() {
     this.userLogged = await userManager.whoami();
 
+    this.username = this.$route.params.id;
+
+    await this.fetchUserInfo();
+    this.loadedUser = true;
+
     if (this.userLogged.name === undefined) {
       // tell the app that the user is not logged in
       this.$emit("message", { userLogged: false });
     } else {
       // tell the app that the user is logged in
       this.$emit("message", { userLogged: true });
+
+      if (
+        this.userLogged.following !== undefined &&
+        this.userLogged.following.includes(this.user.id)
+      ) {
+        // the logged user already follow him
+        this.followButtonText = "Unfollow";
+        this.followButtonStyle = 'btn-dark'
+      } else {
+        this.followButtonText = "Follow";
+
+        this.followButtonStyle = 'btn-primary'
+        
+      }
     }
-
-    this.username = this.$route.params.id;
-
-    await this.fetchUserInfo();
-    this.loadedUser = true;
 
     await this.fetchMessages();
     this.loadedMessages = true;
@@ -112,34 +132,66 @@ export default {
         }
       }
     },
-    async follow(){
-      const user = await userManager.whoami();
-      if (user.error === undefined) {
-        // the user is authenticated
-        let jwt = cookieManager.getCookie("jwt");
+    async follow() {
+      if (this.followButtonText === "Follow") {
+        // Follow the account
 
-        // Set the Authorization header of the request
-        let headers = new Headers();
-        headers.append("Authorization", "Bearer " + jwt);
-        headers.append("Content-type", "application/json");
+        const user = await userManager.whoami();
+        if (user.error === undefined) {
+          // the user is authenticated
+          let jwt = cookieManager.getCookie("jwt");
 
-        const response = await fetch(
-          config.hostname + "/api/social/followers/" + this.user.id,
-          {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify({}),
-          }
-        );
+          // Set the Authorization header of the request
+          let headers = new Headers();
+          headers.append("Authorization", "Bearer " + jwt);
+          headers.append("Content-type", "application/json");
 
-        const result = await response.json();
-        console.log(result);
-
+          const response = await fetch(
+            config.hostname + "/api/social/followers/" + this.user.id,
+            {
+              method: "POST",
+              headers: headers,
+              body: JSON.stringify({}),
+            }
+          );
+          
+          // update frontend
+          this.followButtonText = 'Unfollow';
+          this.followButtonStyle = 'btn-dark';
+        } else {
+          // user is not authenticated
+          this.$router.push({ name: "Login" });
+        }
       } else {
-        // user is not authenticated
-        this.$router.push({ name: "Login" });
+        // UnFollow the account
+
+        const user = await userManager.whoami();
+        if (user.error === undefined) {
+          // the user is authenticated
+          let jwt = cookieManager.getCookie("jwt");
+
+          // Set the Authorization header of the request
+          let headers = new Headers();
+          headers.append("Authorization", "Bearer " + jwt);
+          headers.append("Content-type", "application/json");
+
+          const response = await fetch(
+            config.hostname + "/api/social/followers/" + this.user.id,
+            {
+              method: "DELETE",
+              headers: headers,
+              body: JSON.stringify({}),
+            }
+          );
+
+          this.followButtonText = 'Follow';
+          this.followButtonStyle = 'btn-primary';
+        } else {
+          // user is not authenticated
+          this.$router.push({ name: "Login" });
+        }
       }
-    }
+    },
   },
 };
 </script>
