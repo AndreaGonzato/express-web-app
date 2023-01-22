@@ -2,27 +2,27 @@
   <div class="all">
     <div class="container text-center info">
       <div class="row align-items-start">
-        <div class="col data-type">Username:</div>
+        <div class="col data-type"><b>Username:</b></div>
         <div class="col data">{{ userObj.username }}</div>
       </div>
 
       <div class="row align-items-start">
-        <div class="col data-type">Name:</div>
+        <div class="col data-type"><b>Name:</b></div>
         <div class="col data">{{ this.getName }}</div>
       </div>
 
       <div class="row align-items-start">
-        <div class="col data-type">Surname:</div>
+        <div class="col data-type"><b>Surname:</b></div>
         <div class="col data">{{ this.getSurname }}</div>
       </div>
 
       <div class="row align-items-start">
-        <div class="col data-type">Email:</div>
+        <div class="col data-type"><b>Email:</b></div>
         <div class="col data">{{ userObj.email }}</div>
       </div>
 
       <div class="row align-items-start">
-        <div class="col data-type">Bio:</div>
+        <div class="col data-type"><b>Bio:</b></div>
         <div class="col data">{{ userObj.bio }}</div>
       </div>
     </div>

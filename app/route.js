@@ -239,7 +239,7 @@ router.post("/social/followers/:id", authenticateToken, async (req, res) => {
     .collection(dbCollections.USERS)
     .findOne({ id: userId });
   const list = user.following;
-  if (list.includes(userIDThatHasNewFollower)) {
+  if (list !== undefined && list.includes(userIDThatHasNewFollower)) {
     // the user with userId was already following him (userIDThatHasNewFollower)
     return res.send({
       message: "you already following user: " + userIDThatHasNewFollower,
