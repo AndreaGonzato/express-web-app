@@ -2,7 +2,7 @@ import cookieManager from "@/cookieManager.js";
 import config from "@/config.js";
 
 async function whoami() {
-  var jwt = cookieManager.getCookie("jwt");
+  let jwt = cookieManager.getCookie("jwt");
 
   if (jwt.error === undefined) {
     // Set the Authorization header of the request

@@ -26,7 +26,11 @@ function authenticateToken(req, res, next) {
 
   jwt.verify(token, JWT_SECRET, (err, authData) => {
     if (err) {
-      return res.send({message : "token not valid", error : true, authenticated : false});
+      return res.send({
+        message: "token not valid",
+        error: true,
+        authenticated: false,
+      });
     }
 
     // save the user data in the req obj
@@ -449,8 +453,6 @@ router.post("/auth/logout", async (req, res) => {
   return res.send({ token });
 });
 
-
-
 // API 17 : OK
 // change the bio of the authenticated user
 router.post("/social/users/bio/:text", authenticateToken, async (req, res) => {
@@ -458,8 +460,29 @@ router.post("/social/users/bio/:text", authenticateToken, async (req, res) => {
   const bioText = req.params.text;
 
   const mongo = db.getDb();
-  const result = await mongo.collection(dbCollections.USERS).updateOne({id: userId}, {$set : {bio: bioText}});
+  const result = await mongo
+    .collection(dbCollections.USERS)
+    .updateOne({ id: userId }, { $set: { bio: bioText } });
   res.json(result);
+});
+
+// API 18 : OK
+// a singular tweet (idMsg)
+router.get("/social/tweets/:idMsg", async (req, res) => {
+  const mongo = db.getDb();
+  const message_id = parseInt(req.params.idMsg);
+
+  let tweet = await mongo
+    .collection(dbCollections.TWEETS)
+    .findOne({ id: message_id });
+
+  // define author_username
+  const user = await mongo
+    .collection(dbCollections.USERS)
+    .findOne({ id: tweet.author });
+
+  tweet.author_username = user.username;
+  res.json(tweet);
 });
 
 module.exports = router;
