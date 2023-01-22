@@ -44,6 +44,7 @@
             v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
             v-bind:user-id="this.user.id"
             v-bind:show-like="true"
+            v-bind:show-share="true"
             @like="handleLike"
           ></TheTweet>
 

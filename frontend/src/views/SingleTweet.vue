@@ -1,12 +1,13 @@
 <template>
   <div class="all">
     <h1>Express</h1>
-    <div v-if="fetchedTweet">
+    <div v-if="fetchedTweet" class="tweet">
       <TheTweet
         v-bind:content-obj="tweet"
         v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
         v-bind:user-id="loggedUser.id"
         v-bind:show-like="true"
+        v-bind:show-share="false"
         @like="handleLike"
       >
       </TheTweet>
@@ -16,10 +17,23 @@
       <p>Want to share this Express copy and paste this link:</p>
 
       <form>
-        <input type="text" id="url" ref="code" :value="url" size="30" />
-        <button type="button" class="btn btn-primary" @click.prevent="copyUrl">
-          Copy
-        </button>
+        <div>
+          <input
+            type="text"
+            id="url"
+            ref="code"
+            :value="url"
+            size="30"
+            readonly
+          />
+          <button
+            type="button"
+            class="btn btn-primary copy-btn"
+            @click.prevent="copyUrl"
+          >
+            Copy
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -117,19 +131,19 @@ input {
   color: black;
 }
 
-/*
-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
+h1 {
+  margin-top: 1em;
 }
-*/
+
 p {
-  margin-top: 4em;
+  margin-top: 8em;
 }
 .all {
   text-align: center;
 }
+
+.tweet {
+  margin-top: 3em;
+}
+
 </style>

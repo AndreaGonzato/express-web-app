@@ -17,7 +17,7 @@
         {{ this.likesNumber }}
       </button>
     </span>
-    <span class="share">
+    <span class="share" v-if="showShare">
       <button class="btn btn-secondary" @click.prevent="clickOnShare">
         <i class="fa-solid fa-share"></i>
         Share
@@ -38,7 +38,8 @@ export default {
     contentObj: Object,
     likesNumber: Number,
     userId: Number,
-    showLike : Boolean
+    showLike : Boolean,
+    showShare : true
   },
   data() {
     return {

@@ -19,6 +19,7 @@
           v-bind:content-obj="tweet"
           v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
           v-bind:show-like="true"
+          v-bind:show-share="true"
           v-bind:user-id="userLogged.id"
           @like="handleLike"
         ></TheTweet>
