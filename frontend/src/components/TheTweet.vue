@@ -9,13 +9,21 @@
 
     <p>{{ contentObj.text }}</p>
 
-    <!-- like button-->
+    
     <span class="like" v-if="showLike">
+      <!-- like button-->
       <button class="btn btn-success" @click.prevent="clickOnLike">
         <i class="fa-thumbs-up" :class="likeStyle"></i> Like
         {{ this.likesNumber }}
       </button>
     </span>
+    <span class="share">
+      <button class="btn btn-secondary" @click.prevent="clickOnShare">
+        <i class="fa-solid fa-share"></i>
+        Share
+      </button>
+    </span>
+
   </div>
 </template>
 
@@ -137,6 +145,10 @@ export default {
 
       //const obj = await postRequest.json();
     },
+    clickOnShare(){
+      this.$router.push({ name: "SingleTweet",
+      params: { id: this.contentObj.id }, });
+    }
   },
 };
 </script>
@@ -146,5 +158,9 @@ export default {
 .when{
   margin-left: 3em;
   font-size: x-small;
+}
+
+.share{
+  margin-left: 1em;
 }
 </style>

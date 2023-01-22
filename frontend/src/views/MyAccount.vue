@@ -163,7 +163,7 @@ export default {
       }else{
         this.editBioBtnText = "Edit bio";
         this.editBioBtnStyle = 'btn-secondary'
-        await postBio();
+        await this.postBio();
       }
       
       

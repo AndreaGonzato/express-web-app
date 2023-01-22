@@ -39,6 +39,11 @@ const routes = [
     name: "Search",
     component: () => import("@/views/Search.vue"),
   },
+  {
+    path: "/express/:id",
+    name: "SingleTweet",
+    component: () => import("@/views/SingleTweet.vue"),
+  },
 ];
 
 
