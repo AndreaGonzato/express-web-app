@@ -16,17 +16,18 @@
         <UserInfo v-bind:userObj="this.user"></UserInfo>
 
         <div>
-          <button @click.prevent="editBio" class="btn btn-secondary bio-btn">
-            Edit bio
+          <button @click.prevent="editBio" class="btn bio-btn" v-bind:class="this.editBioBtnStyle">
+            {{ editBioBtnText }}
           </button>
         </div>
 
         <textarea
-        v-if="showBioTextArea"
+          v-if="showBioTextArea"
           class="form-control"
           id="exampleFormControlTextarea1"
           rows="3"
           v-model="this.user.bio"
+          v-on:blur="postBio"
         ></textarea>
 
         <button @click.prevent="logout" class="btn btn-danger">Log out</button>
@@ -68,7 +69,9 @@ export default {
       loadedUser: false,
       showSettings: false,
       tweets: [],
-      showBioTextArea: false
+      showBioTextArea: false,
+      editBioBtnText: 'Edit bio',
+      editBioBtnStyle: 'btn-secondary'
     };
   },
   components: {
@@ -151,8 +154,31 @@ export default {
         }
       }
     },
-    editBio() {
-      this.showBioTextArea = !this.showBioTextArea
+    async editBio() {
+      this.showBioTextArea = !this.showBioTextArea;
+
+      if(this.showBioTextArea){
+        this.editBioBtnText = "Save";
+        this.editBioBtnStyle = 'btn-success'
+      }else{
+        this.editBioBtnText = "Edit bio";
+        this.editBioBtnStyle = 'btn-secondary'
+        await postBio();
+      }
+      
+      
+
+    },
+    async postBio() {
+      let jwt = cookieManager.getCookie("jwt");
+
+      var headers = new Headers();
+      headers.append("Authorization", "Bearer " + jwt);
+      headers.append("Content-type", "application/json");
+      const response = await fetch(config.hostname + "/api/social/users/bio/"+this.user.bio, {
+        method: "POST",
+        headers: headers,
+      });
     },
   },
 };
@@ -166,7 +192,7 @@ hr {
   margin-top: 1em;
 }
 
-textarea{
+textarea {
   max-width: 400px;
   margin: auto;
   margin-bottom: 1em;

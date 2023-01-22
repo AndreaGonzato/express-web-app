@@ -440,13 +440,26 @@ function sortMessages(messages) {
   return messages;
 }
 
-// API 16 : WORKING...
+// API 16 : OK
 // logout
 // send a JWT that have a very short will expire shortly (1 milliseconds)
 router.post("/auth/logout", async (req, res) => {
   const token = generateToken({ id: "someID" }, "1ms");
 
   return res.send({ token });
+});
+
+
+
+// API 17 : OK
+// change the bio of the authenticated user
+router.post("/social/users/bio/:text", authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+  const bioText = req.params.text;
+
+  const mongo = db.getDb();
+  const result = await mongo.collection(dbCollections.USERS).updateOne({id: userId}, {$set : {bio: bioText}});
+  res.json(result);
 });
 
 module.exports = router;
