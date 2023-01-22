@@ -2,7 +2,7 @@
   <div class="home">
     <h1>Express</h1>
     <p>
-      Welcome to <b>Express</b> a social network where you can spread your
+      Welcome to <b>Express</b>, a social network where you can spread your
       messages to the world!
     </p>
   </div>
@@ -32,6 +32,10 @@ export default {
 h1 {
   margin-top: 2em;
   margin-bottom: 2em;
+  font-size: 40;
+}
+p{
+  font-size: large;
 }
 
 .home {

@@ -15,6 +15,20 @@
       <div class="settings" v-if="this.showSettings">
         <UserInfo v-bind:userObj="this.user"></UserInfo>
 
+        <div>
+          <button @click.prevent="editBio" class="btn btn-secondary bio-btn">
+            Edit bio
+          </button>
+        </div>
+
+        <textarea
+        v-if="showBioTextArea"
+          class="form-control"
+          id="exampleFormControlTextarea1"
+          rows="3"
+          v-model="this.user.bio"
+        ></textarea>
+
         <button @click.prevent="logout" class="btn btn-danger">Log out</button>
       </div>
 
@@ -54,6 +68,7 @@ export default {
       loadedUser: false,
       showSettings: false,
       tweets: [],
+      showBioTextArea: false
     };
   },
   components: {
@@ -135,13 +150,15 @@ export default {
           content.likes.push(userID);
         }
       }
-    }
+    },
+    editBio() {
+      this.showBioTextArea = !this.showBioTextArea
+    },
   },
 };
 </script>
 
 <style scoped>
-
 hr {
   max-width: 400px;
   margin: auto;
@@ -149,10 +166,19 @@ hr {
   margin-top: 1em;
 }
 
+textarea{
+  max-width: 400px;
+  margin: auto;
+  margin-bottom: 1em;
+}
+
 .all {
   text-align: center;
 }
 
+.bio-btn {
+  margin-bottom: 1em;
+}
 
 .subMenu {
   display: grid;
