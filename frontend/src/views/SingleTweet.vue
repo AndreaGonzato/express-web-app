@@ -11,12 +11,17 @@
       >
       </TheTweet>
     </div>
-    <p>Want to share this Express copy and paste this link:</p>
 
-    <form>
-      <input type="text" id="url" ref="code" :value="url" size="30" />
-      <button type="button" class="btn btn-primary" @click.prevent="copyUrl">Copy</button>
-    </form>
+    <div class="share-url">
+      <p>Want to share this Express copy and paste this link:</p>
+
+      <form>
+        <input type="text" id="url" ref="code" :value="url" size="30" />
+        <button type="button" class="btn btn-primary" @click.prevent="copyUrl">
+          Copy
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -93,7 +98,7 @@ export default {
     copyUrl() {
       let element = this.$refs.code.select();
       document.execCommand("copy");
-      
+
       /*
       let url = document.getElementById("url");
       url.select();
