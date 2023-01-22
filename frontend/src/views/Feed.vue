@@ -142,6 +142,9 @@ export default {
 </script>
 
 <style scoped>
+h1{
+  margin-top: 1em;
+}
 
 hr {
   max-width: 400px;
@@ -154,6 +157,7 @@ hr {
 }
 .welcome {
   margin-bottom: 2em;
+  margin-top: 2em;
 }
 
 .def-new-express{

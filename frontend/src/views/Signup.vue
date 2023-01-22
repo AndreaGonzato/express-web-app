@@ -149,6 +149,7 @@ export default {
 <style scoped>
 h1 {
   margin-bottom: 1em;
+  margin-top: 1em;
 }
 
 button {

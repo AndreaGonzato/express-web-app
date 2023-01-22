@@ -100,6 +100,7 @@ export default {
 <style scoped>
 h1 {
   padding-bottom: 1.5em;
+  margin-top: 1em;
 }
 
 button {

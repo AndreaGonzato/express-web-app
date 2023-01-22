@@ -186,6 +186,10 @@ export default {
 </script>
 
 <style scoped>
+h1{
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
 hr {
   max-width: 400px;
   margin: auto;
