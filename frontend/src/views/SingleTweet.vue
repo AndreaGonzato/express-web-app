@@ -1,16 +1,22 @@
 <template>
   <div class="all">
-    <h1>the tweet</h1>
+    <h1>Express</h1>
     <div v-if="fetchedTweet">
       <TheTweet
         v-bind:content-obj="tweet"
-        v-bind:likes-number="fetchedTweet.likes ? fetchedTweet.likes.length : 0"
+        v-bind:likes-number="tweet.likes ? tweet.likes.length : 0"
         v-bind:user-id="loggedUser.id"
         v-bind:show-like="true"
         @like="handleLike"
       >
       </TheTweet>
     </div>
+    <p>Want to share this Express copy and paste this link:</p>
+
+    <form>
+      <input type="text" id="url" ref="code" :value="url" size="30" />
+      <button type="button" class="btn btn-primary" @click.prevent="copyUrl">Copy</button>
+    </form>
   </div>
 </template>
 
@@ -29,9 +35,12 @@ export default {
       fetchedTweet: false,
       tweet: Object,
       loggedUser: Object,
+      url: String,
     };
   },
   async created() {
+    this.url = config.domain + this.$route.path;
+
     this.loggedUser = await userManager.whoami();
     const tweetId = this.$route.params.id;
 
@@ -81,11 +90,40 @@ export default {
         }
       }
     },
+    copyUrl() {
+      let element = this.$refs.code.select();
+      document.execCommand("copy");
+      
+      /*
+      let url = document.getElementById("url");
+      url.select();
+      document.execCommand("copy");
+      */
+    },
   },
 };
 </script>
 
 <style scoped>
+input {
+  border: 1px solid #ccc;
+  padding: 5px;
+  background-color: white;
+  color: black;
+}
+
+/*
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+*/
+p {
+  margin-top: 4em;
+}
 .all {
   text-align: center;
 }
