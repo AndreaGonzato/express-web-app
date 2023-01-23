@@ -22,7 +22,7 @@ This is a Twitter clone web app
 ## Optional requirements
 - mongo : if you want to load data and query the database
 - python: if you want to load the data using a [script](https://github.com/AndreaGonzato/express-web-app/blob/main/app/database/loadData.py)
-- pymongo : if you have pip you can in install it with the command: `pip install pymongo`
+- pymongo : to run the python script you need pymongo. If you have pip you can in install it with the command: `pip install pymongo`
 
 
 # How to use
