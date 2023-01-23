@@ -3,10 +3,10 @@
     <h1>Account</h1>
 
     <div class="subMenu">
-      <button @click.prevent="loadYourMessages" class="btn btn-secondary">
+      <button @click.prevent="loadYourMessages" class="btn btn-secondary" v-bind:class="this.showSettings ? '' : 'active-sub-menu'">
         Your Expresses
       </button>
-      <button @click.prevent="loadSettings" class="btn btn-secondary">
+      <button @click.prevent="loadSettings" class="btn btn-secondary" v-bind:class="this.showSettings ?  'active-sub-menu' : ''">
         Settings
       </button>
     </div>
@@ -222,5 +222,10 @@ textarea {
 
 .user-messages {
   margin-top: 2em;
+}
+
+.active-sub-menu{
+  border: 2px solid black;
+  font-weight: bold;
 }
 </style>
