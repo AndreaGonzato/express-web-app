@@ -10,8 +10,6 @@
       <button @click.prevent="postExpress" class="btn btn-primary post-btn">Post</button>
     </div>
 
-
-    <p v-if="this.posted">You added a new Express!</p>
   </div>
 </template>
 
@@ -24,7 +22,7 @@ export default {
   data() {
     return {
       text: "",
-      posted : false
+      posted : false,
     };
   },
   methods: {

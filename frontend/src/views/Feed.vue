@@ -16,7 +16,14 @@
       <PostNewExpress @posted="showGreatAddedNewExpress"></PostNewExpress>
     </div>
 
-    <p v-if="this.showGreat" id="p-great">Great You added a new Express!</p>
+    <p v-if="this.showGreat" id="p-great"><b>You added a new Express!</b></p>
+
+    <p v-if="this.showGreat" id="p-great">
+      <i> {{ this.completedPostQuotes[this.randomNumberQuote].quote }}</i>
+    </p>
+    <p v-if="this.showGreat" id="p-great">
+      - {{ this.completedPostQuotes[this.randomNumberQuote].author }}
+    </p>
 
     <hr />
 
@@ -54,7 +61,36 @@ export default {
       wantToPostNewExpress: false,
       buttonCreatePostStyle: "btn-primary",
       btnCreatePostText: "Post an Express",
-      showGreat : false
+      showGreat: false,
+      randomNumberQuote: 0,
+      completedPostQuotes: [
+        {
+          quote:
+            "If you have the words, there's always a chance that you'll find the way",
+          author: "Seamus Heaney",
+        },
+        {
+          quote:
+            "Everyone has their own ways of expression. I believe we all have a lot to say, but finding ways to say it is more than half the battle.",
+          author: "Criss Jami",
+        },
+        {
+          quote: "If you have big ideas you have to use big words to express them, haven't you?",
+          author: "L.M. Montgomery",
+        },
+        {
+          quote: "Science may never come up with a better office communication system than the coffee break.",
+          author: "Earl Wilson",
+        },
+        {
+          quote: "7 days without coffee makes one WEAK",
+          author: "Anonymous",
+        },
+        {
+          quote: "Caffè: the fuel for creativity and productivity.",
+          author: "Anonymous",
+        },
+      ],
     };
   },
   components: {
@@ -68,9 +104,9 @@ export default {
       this.$emit("message", { userLogged: false });
       // redirect to the error page
       this.$router.push({
-          name: "Error",
-          params: { message: "you need to authenticate" },
-        });
+        name: "Error",
+        params: { message: "you need to authenticate" },
+      });
     } else {
       // tell the app that the user is logged in
       this.$emit("message", { userLogged: true });
@@ -133,16 +169,20 @@ export default {
         this.btnCreatePostText = "Post an Express";
       }
     },
-    showGreatAddedNewExpress(){
+    showGreatAddedNewExpress() {
       this.toggleCreateExpress();
+      this.randomNumberQuote = Math.floor(
+        Math.random() * this.completedPostQuotes.length
+      );
+      console.log(this.randomNumberQuote);
       this.showGreat = true;
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
-h1{
+h1 {
   margin-top: 1em;
 }
 
@@ -160,11 +200,11 @@ hr {
   margin-top: 2em;
 }
 
-.def-new-express{
+.def-new-express {
   margin-top: 1em;
 }
 
-#p-great{
+#p-great {
   margin-top: 1em;
 }
 </style>
