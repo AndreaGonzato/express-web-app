@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     async postExpress() {
-      if (this.text.length <= 2) {
+      if (this.text.length < 2) {
         // write a message at least long two chars
         console.log("write a message at least long two chars");
         return;

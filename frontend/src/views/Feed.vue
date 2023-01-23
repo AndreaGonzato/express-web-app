@@ -176,7 +176,6 @@ export default {
       this.randomNumberQuote = Math.floor(
         Math.random() * this.completedPostQuotes.length
       );
-      console.log(this.randomNumberQuote);
       this.showGreat = true;
     },
   },
