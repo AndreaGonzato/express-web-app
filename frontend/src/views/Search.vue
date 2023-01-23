@@ -4,7 +4,7 @@
 
     <div v-if="this.foundResult">
       <h1>Users found</h1>
-      <p>List of username that contains: {{ query }}</p>
+      <p>List of usernames that contain: {{ query }}</p>
 
       <div v-if="this.loadedUsersList">
         <div v-for="user in this.usersList">

@@ -16,7 +16,7 @@
         <div class="col data">{{ this.getSurname }}</div>
       </div>
 
-      <div class="row align-items-start">
+      <div class="row align-items-start" v-if="this.showEmail">
         <div class="col data-type"><b>Email:</b></div>
         <div class="col data">{{ userObj.email }}</div>
       </div>
@@ -34,6 +34,7 @@ export default {
   name: "UserInfo",
   props: {
     userObj: Object,
+    showEmail : Boolean
   },
   computed: {
     getName() {

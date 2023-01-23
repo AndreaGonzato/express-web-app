@@ -11,7 +11,7 @@
       {{ this.followButtonText }}
     </button>
 
-    <UserInfo v-if="loadedUser" v-bind:userObj="this.user"></UserInfo>
+    <UserInfo v-if="loadedUser" v-bind:userObj="this.user" v-bind:show-email="false"></UserInfo>
 
     <div v-for="tweet in tweets">
       <div class="tweet">

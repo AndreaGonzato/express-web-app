@@ -13,7 +13,7 @@
 
     <div v-if="loadedUser">
       <div class="settings" v-if="this.showSettings">
-        <UserInfo v-bind:userObj="this.user"></UserInfo>
+        <UserInfo v-bind:userObj="this.user" v-bind:show-email="true"></UserInfo>
 
         <div>
           <button @click.prevent="editBio" class="btn bio-btn" v-bind:class="this.editBioBtnStyle">
