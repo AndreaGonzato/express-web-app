@@ -27,12 +27,12 @@ This is a Twitter clone web app
 In the directory `/express-web-app/app` create a file named `.env` and define your key to sign JWT tokens like this:
 
 ```
-TOKEN_SECRET=<yourSecretKey>
+TOKEN_SECRET=yourSecretKey
 ```
 
 
 ## How to start back-end (web server and mongo container)
-In the directory `/express-web-app/`
+In the directory `/express-web-app/` run the command:
 ```
 docker compose up
 ```
