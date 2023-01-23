@@ -14,6 +14,8 @@ import userManager from "@/userManager.js";
 export default {
   name: "Home",
   async created() {
+    this.$emit("active", { page: 'Home' });
+
     const user = await userManager.whoami();
     if (user.error === undefined) {
       // the user is authenticated

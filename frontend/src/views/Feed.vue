@@ -98,6 +98,8 @@ export default {
     PostNewExpress,
   },
   async created() {
+    this.$emit("active", { page: 'Feed' });
+
     const user = await userManager.whoami();
     if (user.name === undefined) {
       // tell the app that the user is not logged in

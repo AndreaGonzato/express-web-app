@@ -17,33 +17,33 @@
     </div>
 
     <div class="all-nav">
-      <div class="nav">
+      <div class="nav topnav">
         <span>
-          <router-link to="/" @click.prevent="removeSearchText"
+          <router-link to="/" @click.prevent="removeSearchText" v-bind:class="this.activePage === 'Home'? 'nav-item active' : ''"
             >Home</router-link
           >
         </span>
 
         <span v-if="!userLogged">
-          <router-link to="/signup" @click.prevent="removeSearchText"
+          <router-link to="/signup" @click.prevent="removeSearchText" v-bind:class="this.activePage === 'Signup'? 'nav-item active' : ''"
             >Signup</router-link
           >
         </span>
 
         <span v-if="!userLogged">
-          <router-link to="/login" @click.prevent="removeSearchText"
+          <router-link to="/login" @click.prevent="removeSearchText" v-bind:class="this.activePage === 'Login'? 'nav-item active' : ''"
             >Login</router-link
           >
         </span>
 
         <span v-if="userLogged">
-          <router-link to="/feed" @click.prevent="removeSearchText"
+          <router-link to="/feed" @click.prevent="removeSearchText" v-bind:class="this.activePage === 'Feed'? 'nav-item active' : ''"
             >Feed</router-link
           >
         </span>
 
         <span v-if="userLogged">
-          <router-link to="/account/me" @click.prevent="removeSearchText"
+          <router-link to="/account/me" @click.prevent="removeSearchText" v-bind:class="this.activePage === 'MyAccount'? 'nav-item active' : ''"
             >Account</router-link
           >
         </span>
@@ -56,7 +56,8 @@
 export default {
   name: "TheNavigation",
   props: {
-    userLogged: Boolean,
+    userLogged: Boolean, 
+    activePage : String
   },
   data() {
     return {
@@ -126,5 +127,28 @@ span {
 .all-nav{
   display: grid;
   place-content: center start;
+
 }
+
+/*
+.active-page{
+  background-color: $blue-300;
+  font-size: large;
+  font-weight: bold;
+}
+*/
+
+.topnav {
+  overflow: hidden;
+}
+
+.topnav a.active {
+  border-bottom: 3px solid #646cff;
+}
+
+.topnav a:hover {
+  border-bottom: 3px solid #646cff;
+}
+
+
 </style>

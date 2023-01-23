@@ -33,6 +33,8 @@ export default {
     };
   },
   async created() {
+    this.$emit("active", { page: 'NoPage' });
+
     this.query = this.$route.params.query;
     await this.searchQuery();
   },

@@ -80,6 +80,7 @@ export default {
     TheTweet,
   },
   async created() {
+    this.$emit("active", { page: 'MyAccount' });
     this.user = await userManager.whoami();
 
     if (this.user.name === undefined) {

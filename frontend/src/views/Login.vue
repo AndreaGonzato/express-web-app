@@ -42,6 +42,9 @@ export default {
       password: "",
     };
   },
+  created(){
+    this.$emit("active", { page: 'Login' });
+  },
   methods: {
     async login() {
       const token = await fetch(config.hostname + "/api/auth/signin", {

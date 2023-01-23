@@ -80,6 +80,9 @@ export default {
       bio: "Hi! I'm on Express",
     };
   },
+  created(){
+    this.$emit("active", { page: 'Signup' });
+  },
   methods: {
     async signup() {
 
