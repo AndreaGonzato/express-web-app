@@ -24,7 +24,6 @@ export default {
     },
     handleActivePage(message){
       this.activePage = message.page;
-      console.log(this.activePage)
     }
   }
 };
