@@ -21,6 +21,8 @@ This is a Twitter clone web app
 
 ## Optional requirements
 - mongo : if you want to load data and query the database
+- python: if you want to load the data using a [script](https://github.com/AndreaGonzato/express-web-app/blob/main/app/database/loadData.py)
+- pymongo : if you have pip you can in install it with the command: `pip install pymongo`
 
 
 # How to use
@@ -40,6 +42,15 @@ if the previous command did not work but you installed the requirements then you
 ```
 docker-compose up
 ```
+
+## How to load some data using the script (Optional)
+This section is optional a do it only if you want to load some data.
+Run the script `loadData.py` located in `/express-web-app/app/database`
+```
+cd /express-web-app/app/database
+python3 loadData.py
+```
+
 
 ## How to start front-end (VueJS)
 In the directory `/express-web-app/frontend` run the command:
