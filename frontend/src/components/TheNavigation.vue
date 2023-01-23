@@ -7,29 +7,47 @@
     </div>
 
     <div class="search">
-      <input type="text" placeholder="username" class="form-control"  @keyup.enter="handleSearch"  v-model="searchText"/>
+      <input
+        type="text"
+        placeholder="username"
+        class="form-control"
+        @keyup.enter="handleSearch"
+        v-model="searchText"
+      />
     </div>
 
-    <div class="nav">
-      <span>
-        <router-link to="/" @click.prevent="removeSearchText">Home</router-link>
-      </span>
+    <div class="all-nav">
+      <div class="nav">
+        <span>
+          <router-link to="/" @click.prevent="removeSearchText"
+            >Home</router-link
+          >
+        </span>
 
-      <span v-if="!userLogged">
-        <router-link to="/signup" @click.prevent="removeSearchText">Signup</router-link>
-      </span>
+        <span v-if="!userLogged">
+          <router-link to="/signup" @click.prevent="removeSearchText"
+            >Signup</router-link
+          >
+        </span>
 
-      <span v-if="!userLogged">
-        <router-link to="/login" @click.prevent="removeSearchText">Login</router-link>
-      </span>
+        <span v-if="!userLogged">
+          <router-link to="/login" @click.prevent="removeSearchText"
+            >Login</router-link
+          >
+        </span>
 
-      <span v-if="userLogged">
-        <router-link to="/feed" @click.prevent="removeSearchText">Feed</router-link>
-      </span>
+        <span v-if="userLogged">
+          <router-link to="/feed" @click.prevent="removeSearchText"
+            >Feed</router-link
+          >
+        </span>
 
-      <span v-if="userLogged">
-        <router-link to="/account/me" @click.prevent="removeSearchText">Account</router-link>
-      </span>
+        <span v-if="userLogged">
+          <router-link to="/account/me" @click.prevent="removeSearchText"
+            >Account</router-link
+          >
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -40,30 +58,30 @@ export default {
   props: {
     userLogged: Boolean,
   },
-  data(){
+  data() {
     return {
-      searchText : ''
-    }
+      searchText: "",
+    };
   },
   methods: {
-    handleSearch(){
-      if(this.searchText.length <= 0){
-        return
+    handleSearch() {
+      if (this.searchText.length <= 0) {
+        return;
       }
       this.$router.push({
-          name: "Search",
-          params: { query: this.searchText },
-        });
+        name: "Search",
+        params: { query: this.searchText },
+      });
     },
-    removeSearchText(){
-      this.searchText = '';
-    }
-  }
+    removeSearchText() {
+      this.searchText = "";
+    },
+  },
 };
 </script>
 
 <style scoped>
-input{
+input {
   background-color: white;
   margin: auto;
   margin-top: 0.3em;
@@ -73,7 +91,7 @@ input{
 img {
   height: 50px;
   width: 50px;
-  margin-top: 1%;
+  margin-top: 10%;
 }
 
 span {
@@ -81,12 +99,16 @@ span {
 }
 
 .logo {
+  display: grid;
+  place-content: center right;
   text-align: center;
   margin-left: 200px;
 }
 
-.search{
+.search {
+  display: grid;
   text-align: center;
+  place-content: center;
 }
 
 .wrapper {
@@ -99,5 +121,10 @@ span {
 .nav {
   padding: 0.5rem;
   text-align: center;
+}
+
+.all-nav{
+  display: grid;
+  place-content: center start;
 }
 </style>

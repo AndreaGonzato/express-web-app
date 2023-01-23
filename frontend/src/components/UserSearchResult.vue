@@ -2,12 +2,12 @@
   <div class="all">
     <div class="container">
       <div class="row">
-        <div class="col-sm first-col">
+        <div class="col-sm first-col center-vertically">
           <router-link v-bind:to="'/account/' + this.userObj.username"
             >@{{ this.userObj.username }}</router-link
           >
         </div>
-        <div class="col-sm">{{ this.fulName }}</div>
+        <div class="col-sm center-vertically">{{ this.fulName }}</div>
         <div class="col-sm">
           <button
             @click.prevent="followHandler"
@@ -136,5 +136,10 @@ button {
 
 .first-col {
   text-align: left;
+}
+
+.center-vertically{
+  display: grid;
+  place-content: center start; /* center the text vertically, align the text to the left horizontally */
 }
 </style>
