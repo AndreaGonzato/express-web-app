@@ -52,22 +52,6 @@ router.use((req, res, next) => {
 
 // TODO GENERAL check that it dos not inject code in the api (attention to all the POST requests)
 
-// TODO remove this, it is just an example to verify that an user is authenticated
-router.get("/protected", authenticateToken, async (req, res) => {
-  const userId = req.user.id;
-
-  res.json({
-    message: "you are in a protected part of the site",
-    userId: userId,
-  });
-});
-
-// TODO remove this get, it is just a test to see if the server is still alive
-router.get("/test", (req, res) => {
-  console.log("Server is still alive");
-  res.json({ message: "server is still alive working" });
-});
-
 // API 1 : OK
 // register a new user
 // input e.g. {"username": "uniqueUsername", "email":"someemail@gmail.com", "password":"pass", "name":"Matt", "surname":"Taylor", "bio":"my bio"}
