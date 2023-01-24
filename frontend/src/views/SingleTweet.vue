@@ -58,6 +58,7 @@ export default {
     };
   },
   async created() {
+    this.$emit("active", { page: 'NoPage' });
     this.url = config.domain + this.$route.path;
 
     this.loggedUser = await userManager.whoami();

@@ -19,6 +19,7 @@ export default {
     };
   },
   created() {
+    this.$emit("active", { page: 'noPage' });
     this.message = this.$route.params.message;
   },
 };
