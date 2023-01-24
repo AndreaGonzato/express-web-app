@@ -33,7 +33,7 @@ TOKEN_SECRET=yourSecretKey
 ```
 
 
-## How to start back-end (web server and mongo container)
+## Start back-end (web server and mongo container)
 In the directory `/express-web-app/` run the command:
 ```
 docker compose up
@@ -43,8 +43,8 @@ if the previous command did not work but you installed the requirements then you
 docker-compose up
 ```
 
-## How to load some data using the script (Optional)
-This section is optional a do it only if you want to load some data.
+## (Optional) Load some data using the script
+This section is optional. Read it only if you want to have some fake users and posts on the social network.
 Run the script `loadData.py` located in `/express-web-app/app/database`
 ```
 cd /express-web-app/app/database
@@ -52,7 +52,7 @@ python3 loadData.py
 ```
 
 
-## How to start front-end (VueJS)
+## Start front-end (VueJS)
 In the directory `/express-web-app/frontend` run the command:
 ```
 npm run dev
