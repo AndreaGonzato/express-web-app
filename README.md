@@ -14,29 +14,28 @@
 # express-web-app
 This is a Twitter clone web app
 
-# Requirements
+## Requirements
 - [docker](https://www.docker.com/)
 - [docker compose](https://docs.docker.com/compose/install/)
 - [npm](https://www.npmjs.com/)
-- express: intall with the command `npm install express`
+- express: install with the command `npm install express`
 - vite: install with the command: `npm install vite`
 
-## Optional requirements
-- mongo : if you want to load data and query the database
+### Optional requirements
 - python: if you want to load the data using a [script](https://github.com/AndreaGonzato/express-web-app/blob/main/app/database/loadData.py)
 - pymongo : to run the python script you need pymongo. If you have pip you can in install it with the command: `pip install pymongo`
 
 
-# How to use
-In the directory `/express-web-app/app` create a file named `.env` and define your key to sign JWT tokens like this:
+## How to use
+In the directory `app` create a file named `.env` and define your key to sign JWT tokens like this:
 
 ```
 TOKEN_SECRET=yourSecretKey
 ```
 
 
-## Start back-end (web server and mongo container)
-In the directory `/express-web-app/` run the command:
+### Start back-end (web server and mongo container)
+In the root directory of the project run the command:
 ```
 sudo docker compose up
 ```
@@ -46,17 +45,18 @@ sudo docker-compose up
 ```
 
 
-## (Optional) Load some data using the script
+### (Optional) Load some data using the script
 This section is optional. Read it only if you want to have some fake users and posts on the social network.
-Run the script `loadData.py` located in `/express-web-app/app/database`
+Run the script `loadData.py` located in `app/database`
 ```
 cd /express-web-app/app/database
 python3 loadData.py
 ```
 
 
-## Start front-end (VueJS)
-In the directory `/express-web-app/frontend` run the command:
+### Start front-end (VueJS)
+In the directory `frontend` run the command:
 ```
 npm run dev
 ```
+Then open your brower and go to http://localhost:5173/
