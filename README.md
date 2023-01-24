@@ -59,4 +59,4 @@ In the directory `frontend` run the command:
 ```
 npm run dev
 ```
-Then open your brower and go to http://localhost:5173/
+Then open your brower and go to http://localhost:5173/ and you should have the website working locally.
