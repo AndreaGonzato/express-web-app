@@ -18,6 +18,8 @@ This is a Twitter clone web app
 - [docker](https://www.docker.com/)
 - [docker compose](https://docs.docker.com/compose/install/)
 - [npm](https://www.npmjs.com/)
+- express: intall with the command `npm install express`
+- vite: install with the command: `npm install vite`
 
 ## Optional requirements
 - mongo : if you want to load data and query the database
@@ -36,12 +38,13 @@ TOKEN_SECRET=yourSecretKey
 ## Start back-end (web server and mongo container)
 In the directory `/express-web-app/` run the command:
 ```
-docker compose up
+sudo docker compose up
 ```
 if the previous command did not work but you installed the requirements then you are using a old version of docker[[1]](https://stackoverflow.com/a/66516826) compose then run the old command:
 ```
-docker-compose up
+sudo docker-compose up
 ```
+
 
 ## (Optional) Load some data using the script
 This section is optional. Read it only if you want to have some fake users and posts on the social network.
