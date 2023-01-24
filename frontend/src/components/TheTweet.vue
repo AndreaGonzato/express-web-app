@@ -64,6 +64,7 @@ export default {
         let date = fullDate.substring(0, 10);
 
         let time = fullDate.match(/T(.*)Z/)[1];
+
         time = time.substring(0, time.length - 7);
 
         return date + " " + time;

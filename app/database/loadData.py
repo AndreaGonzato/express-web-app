@@ -3,7 +3,10 @@ import pymongo
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["expressDB"] # TODO change to expressDB
 mycol1 = mydb["users"]
+mycol1.drop() # to remove all the previous data
 mycol2 = mydb["tweets"]
+mycol2.drop() # to remove all the previous data
+
 
 users = [
 {
@@ -15,6 +18,7 @@ users = [
     "surname": "Gonzato",
     "bio": "this is a bio"
 },
+
 { "id": 2, "username": "jane", "email": "jane.doe@gmail.com", "password": "mySecretPassword123", "name": "Jane", "surname": "Doe", "bio": "I love hiking and reading books." },
 { "id": 3, "username": "john", "email": "john.smith@gmail.com", "password": "smith123", "name": "John", "surname": "Smith", "bio": "I am a software developer and love building new things." },
 { "id": 4, "username": "sarah", "email": "sarah.johnson@gmail.com", "password": "sarah555", "name": "Sarah", "surname": "Johnson", "bio": "I am a graphic designer and love creating beautiful designs." },
