@@ -52,6 +52,7 @@ Run the script `loadData.py` located in `app/database`
 cd /express-web-app/app/database
 python3 loadData.py
 ```
+If you do not want to load the data using python you can follow the and try to run the commands that are in this [file](https://github.com/AndreaGonzato/express-web-app/blob/main/data-creation.txt)
 
 
 ### Start front-end (VueJS)
