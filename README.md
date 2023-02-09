@@ -61,3 +61,7 @@ In the directory `frontend` run the command:
 npm run dev
 ```
 Then open your brower and go to http://localhost:5173/ and you should have the website working locally.
+
+
+# Preview 
+![img](https://github.com/AndreaGonzato/express-web-app/blob/main/feedPage.png)
